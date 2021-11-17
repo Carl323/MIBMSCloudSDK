@@ -5,3 +5,10 @@ Copyright (c) 2021 SuYichen.
 */
 #include "ServersManager.h"
 
+ServersManager::ServersManager()
+{
+}
+
+ServersManager::~ServersManager()
+{
+}
