@@ -38,9 +38,6 @@
     <ClCompile Include="private\Core.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="private\main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="private\MethodsLibrary.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -51,6 +48,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="private\ServersManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

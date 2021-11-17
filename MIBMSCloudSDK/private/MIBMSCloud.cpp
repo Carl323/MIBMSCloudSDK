@@ -336,6 +336,13 @@ void server::close(bool Forced)
 
     }
 }
+void server::sendrebootmessage()
+{
+}
+bool server::canrebootnow()
+{
+    return true;
+}
 #endif
 Handler::Handler()
 {

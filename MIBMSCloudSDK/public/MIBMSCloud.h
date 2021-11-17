@@ -44,6 +44,8 @@ public:
     void process();
     void sendata(int TargetClient, int MesType, char ModuleName[20], char sendbuf[1024]);
     void close(bool Forced);
+    void sendrebootmessage();
+    bool canrebootnow();
 private:
     int listener;//¼àÌýÌ×½Ó×Ö
     int writing;

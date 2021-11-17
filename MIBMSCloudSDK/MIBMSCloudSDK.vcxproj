@@ -148,8 +148,8 @@
     <ClInclude Include="public\ServersManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="private\Core.cpp" />
-    <ClCompile Include="private\main.cpp" />
     <ClCompile Include="private\MethodsLibrary.cpp" />
     <ClCompile Include="private\MIBMSCloud.cpp" />
     <ClCompile Include="private\ModulesListContainer.cpp" />
