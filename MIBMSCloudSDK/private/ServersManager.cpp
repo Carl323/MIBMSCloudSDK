@@ -11,7 +11,8 @@ Copyright (c) 2021 SuYichen.
 #ifdef SERVER
 ServersManager::ServersManager()
 {
-	printf("服务器初始化中...");
+	printf("\033[34;47m      ---MIBMSCloudServer---      \033[0m\n");
+	printf("服务器初始化中...\n");
 	theserver = new server;
 	thread* SP = new std::thread(&server::process, theserver);
 	printf("初始化完成！\n");

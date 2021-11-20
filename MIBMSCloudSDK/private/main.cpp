@@ -8,10 +8,10 @@
 #ifdef SERVER
 int main() {
 	ServersManager* SM = new ServersManager;
-	Delay(3);
+	Delay(1.5);
 	while (true)
 	{
-		printf("MIBMSCloudServer->");
+		printf("\n\033[31;43mMIBMSCloudServer\033[0m ->");
 		std::string str;
 		std::getline(cin, str);
 		char STR[20];

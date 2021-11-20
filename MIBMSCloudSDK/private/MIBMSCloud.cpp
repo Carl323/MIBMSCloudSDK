@@ -156,6 +156,8 @@ server::server()
     writing=0;
     serverAddr.sin_family = PF_INET;
     serverAddr.sin_port = SERVER_PORT;
+    printf("ServerIP:%s  ", SERVER_IP);
+    printf("Port:%d\n",SERVER_PORT);
     inet_pton(AF_INET,SERVER_IP, &serverAddr.sin_addr.s_addr);//将字符串类型转换uint32_t
 }
 server::~server()
@@ -211,7 +213,7 @@ void server::process()
     init();
     //下面就是不断的检查
     printf("监听服务启动\n");
-    printf("--Powerd By MIBMSCloudSDK V%s--\n",SDKVersion);
+    printf("\033[34;47m--Powerd By MIBMSCloudSDK V%s--\033[0m\n",SDKVersion);
     while (1)
     {
         mount = socnum.size();
