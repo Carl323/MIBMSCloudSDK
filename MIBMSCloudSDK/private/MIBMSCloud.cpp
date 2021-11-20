@@ -177,7 +177,7 @@ void server::init()
 
     listener = socket(AF_INET, SOCK_STREAM, 0);//采用ipv4,TCP传输
     if (listener == -1) { printf("Error at socket(): %ld\n", WSAGetLastError()); perror("listener failed"); exit(1); }
-    printf("创建成功\n");
+    printf("Listner创建成功\n");
 
     unsigned long ul = 1;
     if (ioctlsocket(listener, FIONBIO, (unsigned long*)&ul) == -1) { perror("ioctl failed"); exit(1); };
@@ -210,7 +210,8 @@ void server::process()
     FD_ZERO(&fds);//将fds清零
     init();
     //下面就是不断的检查
-    printf("正在等待中\n");
+    printf("监听服务启动\n");
+    printf("--Powerd By MIBMSCloudSDK V%s--",SDKVersion);
     while (1)
     {
         mount = socnum.size();

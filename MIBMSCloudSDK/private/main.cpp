@@ -6,7 +6,5 @@ int main() {
 	ServersManager* SM = new ServersManager;
 	while (true)
 	{
-		printf("-MIBMSCloud 1.0.2-");
-		Delay(9);
 	}
 }
