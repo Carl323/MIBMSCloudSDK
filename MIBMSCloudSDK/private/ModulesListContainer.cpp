@@ -8,6 +8,7 @@ Copyright (c) 2021 SuYichen.
 #ifdef  SERVER
 #include "ModulesListContainer.h"
 #include "MethodsLibrary.h"
+#include "send_info.h"
 #include <iostream>
 #include <chrono>
 #include <algorithm>
@@ -17,7 +18,7 @@ using namespace std;
 
 ModulesListContainer::ModulesListContainer()
 {
-	std::vector<ModuleClientInfo> ModulesList ={};
+	ModulesList ={};
 }
 void ModulesListContainer::AddClientInfoToList(ModuleClientInfo ClientInfo)
 {
@@ -25,10 +26,10 @@ void ModulesListContainer::AddClientInfoToList(ModuleClientInfo ClientInfo)
 }
 void ModulesListContainer::RemoveClientFromList(ModuleClientInfo ClientInfo)
 {
-	VectorElementDelete_ModuleClientInfo(ClientInfo.ModuleID, ModulesList);
+	VectorElementDelete_ModuleClientInfo(ClientInfo.ClientSocket, ModulesList);
 }
-int ModulesListContainer::GetModuleSilentSocket(char MoudleID) {
-	ModuleClientInfo TargetModuleInfo=VectorErgodic_ModuleClientInfo(&MoudleID,ModulesList);
+int ModulesListContainer::GetModuleSilentSocket(int ClientSocket) {
+	ModuleClientInfo TargetModuleInfo=VectorErgodic_ModuleClientInfo(ClientSocket,ModulesList);
 	return TargetModuleInfo.ClientSocket;
 }
 #endif

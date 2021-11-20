@@ -7,6 +7,7 @@ Copyright (c) 2021 SuYichen.
 
 #include "MIBMSCloudApp.h"
 #include "Core.h"
+#include "send_info.h"
 #include <conio.h>
 #include <iostream>
 #include <thread>
@@ -25,13 +26,7 @@ Copyright (c) 2021 SuYichen.
 #include <unistd.h>//定义socklen_t
 #endif
 
-struct send_info
-{
-    int MessageType; //消息的类型
-    char ModuleID[20]; //模块ID
-    int info_length; //发送的消息主体的长度
-    char info_content[966]; //消息主体
-};
+
 
 #ifdef SERVER
 class server

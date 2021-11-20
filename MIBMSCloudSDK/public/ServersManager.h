@@ -18,7 +18,5 @@ public:
 private:
 	server* theserver;
 };
-
-void Delay(int times);
 #endif // SERVER
 

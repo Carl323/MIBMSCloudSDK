@@ -6,6 +6,7 @@ Copyright (c) 2021 SuYichen.
 #include "MIBMSCloud.h"
 #include "Core.h"
 #include "MIBMSCloudApp.h"
+#include "send_info.h"
 #include "stdio.h"
 
 using namespace std;
@@ -298,17 +299,11 @@ void server::process()
 
 void server::sendata(int TargetClient,int MesType,char ModuleName[20],char sendbuf[1024])
 {
-    char snd_buf[1024];
+    char snd_buf[1032];
     send_info sndinfo;
     //清空消息类型的缓存，并将新的消息类型写入结构体↓
     sndinfo.MessageType=0;
     sndinfo.MessageType = MesType;
-    //清空目标模块名称的缓存，并将新的模块名称写入结构体↓
-    memset(sndinfo.ModuleID, 0, sizeof(sndinfo.MessageType));
-    for (int i = 0; i < (sizeof(ModuleName)); ++i)
-    {
-        sndinfo.ModuleID[i] = ModuleName[i];
-    }
     //清空消息主体的缓存，并将新的消息主体写入结构体↓
     memset(sndinfo.info_content, 0, sizeof(sndinfo.info_content));
     for (int i = 0; i < (sizeof(sendbuf)); ++i)
@@ -318,7 +313,7 @@ void server::sendata(int TargetClient,int MesType,char ModuleName[20],char sendb
     //计算结构体中主体消息的大小↓
     sndinfo.info_length = sizeof(sendbuf[1024])-1;
     //清空待发送消息的缓存↓
-    memset(snd_buf, 0, 1024);
+    memset(snd_buf, 0, 1032);
     //结构体转换成字符串↓
     memcpy(snd_buf, &sndinfo, sizeof(sndinfo)); 
     //将消息发送给客户端
@@ -364,7 +359,6 @@ send_info Handler::MessageHandler(char buf[1024])
     send_info clt;
     memset(&clt, 0, sizeof(clt));//清空结构体
     memcpy(&clt, buf, sizeof(clt));//把接收到的信息转换成结构体
-    clt.info_content[clt.info_length] = NULL;
     return clt;
 }
 
@@ -377,31 +371,7 @@ void Handler::TaskDistributor(int client,send_info info)
     Core* core = Cli->ClientCore;
     #endif // CLIENT
 
-    switch (info.MessageType)
-    {
-    case GENERATE:
-    {
-        core->GenerateNewClient(client,info.ModuleID,info.info_length,info.info_content);
-    }
-    case COMMAND:
-    {
-        core->CommandHandler(client, info.ModuleID, info.info_length, info.info_content);
-    }
-    case INFOREPORT:
-    {
-        core->InfoReportHandler(client, info.ModuleID, info.info_length, info.info_content);
-    }
-    case ERRORREPORT:
-    {
-        core->ErrorReportHandler(client, info.ModuleID, info.info_length, info.info_content);
-    }
-    case WARNINGREPORT:
-    {
-        core->WarningReportHandler(client, info.ModuleID, info.info_length, info.info_content);
-    }
-    default:
-        break;
-    }
+    
 }
 
 #ifdef SERVER

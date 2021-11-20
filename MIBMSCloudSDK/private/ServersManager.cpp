@@ -5,6 +5,7 @@ Copyright (c) 2021 SuYichen.
 */
 #include "ServersManager.h"
 #include "MIBMSCloud.h"
+#include "MethodsLibrary.h"
 #include <ctime> 
 
 #ifdef SERVER
@@ -24,10 +25,10 @@ void ServersManager::Reboot(bool Forced)
 	{
 		while(!theserver->canrebootnow())
 		{
-			Delay(1000);
+			Delay(1);
 		}
 		theserver->sendrebootmessage();
-		Delay(9*1000);
+		Delay(9);
 		delete theserver;
 		theserver = new server;
 	}
@@ -41,11 +42,5 @@ void ServersManager::Reboot(bool Forced)
 server* ServersManager::GetServer()
 {
 	return theserver;
-}
-
-void Delay(int time)//time*1000ÎªÃëÊý 
-{
-	clock_t now =clock();
-	while(clock()-now<time);
 }
 #endif // SERVER

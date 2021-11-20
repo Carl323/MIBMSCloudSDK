@@ -11,7 +11,6 @@ Copyright (c) 2021 SuYichen.
 #ifdef  SERVER
 struct ModuleClientInfo
 {
-	char ModuleID[20];
 	int ClientSocket;
 };
 class ModulesListContainer
@@ -20,7 +19,7 @@ public:
 	ModulesListContainer();
 	void AddClientInfoToList(ModuleClientInfo ClientInfo);
 	void RemoveClientFromList(ModuleClientInfo ClientInfo);
-	int GetModuleSilentSocket(char MoudleID);
+	int GetModuleSilentSocket(int ClientSocket);
 private:
 	std::vector<ModuleClientInfo> ModulesList;
 };

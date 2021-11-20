@@ -33,6 +33,12 @@
     <ClInclude Include="public\ServersManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="public\send_info.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="public\TaskInfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\Core.cpp">
@@ -50,7 +56,7 @@
     <ClCompile Include="private\ServersManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="private\main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
