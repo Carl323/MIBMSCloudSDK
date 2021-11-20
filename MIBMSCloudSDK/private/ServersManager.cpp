@@ -30,14 +30,19 @@ void ServersManager::Reboot(bool Forced)
 			Delay(1);
 		}
 		theserver->sendrebootmessage();
-		Delay(9);
+		printf("将在三秒内重启服务器！\n");
+		Delay(3);
 		delete theserver;
 		theserver = new server;
+		thread* SP = new std::thread(&server::process, theserver);
+		printf("重启完成！\n");
 	}
 	else
 	{
 		delete theserver;
 		theserver = new server;
+		thread* SP = new std::thread(&server::process, theserver);
+		printf("重启完成！\n");
 	}
 }
 

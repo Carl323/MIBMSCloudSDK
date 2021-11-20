@@ -211,7 +211,7 @@ void server::process()
     init();
     //下面就是不断的检查
     printf("监听服务启动\n");
-    printf("--Powerd By MIBMSCloudSDK V%s--",SDKVersion);
+    printf("--Powerd By MIBMSCloudSDK V%s--\n",SDKVersion);
     while (1)
     {
         mount = socnum.size();
