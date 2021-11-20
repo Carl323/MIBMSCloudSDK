@@ -3,14 +3,12 @@ This file is part of MIBMSCloudSystem Project.
 MIBMSCloud.h/.cpp - The base code of connection and data transmission.
 Copyright (c) 2021 SuYichen.
 */
+
 #include "MIBMSCloud.h"
 #include "Core.h"
-#include "MIBMSCloudApp.h"
 #include "send_info.h"
 #include "stdio.h"
-
-using namespace std;
-
+#include "MIBMSCloudApp.h"
 
 #ifdef CLIENT
 client::client()
@@ -319,24 +317,13 @@ void server::sendata(int TargetClient,int MesType,char ModuleName[20],char sendb
     //将消息发送给客户端
     send(TargetClient, snd_buf, sizeof(snd_buf) - 1, 0);
 }
-void server::close(bool Forced)
-{
-    if (Forced)
-    {
-        printf("服务器已关闭");
-        delete this;
-    }
-    else
-    {
-
-    }
-}
 void server::sendrebootmessage()
 {
+
 }
 bool server::canrebootnow()
 {
-    return true;
+    return (ServerCore->IsBusy());
 }
 #endif
 Handler::Handler()

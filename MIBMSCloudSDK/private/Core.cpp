@@ -19,10 +19,6 @@ Core::Core()
     thread* t2=new thread(&Core::TaskHandler, this);
     thread* t3=new thread(&Core::TaskHandler, this);
     thread* t4=new thread(&Core::TaskHandler, this);
-    t1->join();
-    t2->join();
-    t3->join();
-    t4->join();
 }
 
 Core::~Core()
@@ -46,11 +42,16 @@ Core::~Core()
 }
 #endif // CLIENT
 
+bool  Core::IsBusy()
+{
+    return (sizeof(Tasks)>0);
+}
+
 void Core::TaskHandler()
 {
     while (true)
     {
-        if (sizeof(Tasks)>0)
+        if (sizeof(Tasks)<0)
         {
             some_mutex.lock();
             TaskInfo info = Tasks[0];

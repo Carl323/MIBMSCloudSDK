@@ -11,9 +11,12 @@ Copyright (c) 2021 SuYichen.
 #ifdef SERVER
 ServersManager::ServersManager()
 {
+	printf("服务器初始化中...");
 	theserver = new server;
+	theserver->init();
+	thread* SP = new std::thread(&server::process, theserver);
+	printf("初始化完成！");
 }
-
 ServersManager::~ServersManager()
 {
 	delete theserver;

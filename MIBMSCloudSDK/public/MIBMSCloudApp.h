@@ -18,7 +18,7 @@ Copyright (c) 2021 SuYichen.
 
 //服务器IP和端口配置
 #define SERVER_IP "127.0.0.1"// 默认服务器端IP地址
-#define SERVER_PORT 8888// 服务器端口号
+#define SERVER_PORT 9999// 服务器端口号
 
 //以下内容请勿更改否则会导致Core运行异常
 #define GENERATE 0
