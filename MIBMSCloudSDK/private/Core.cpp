@@ -13,12 +13,30 @@ Copyright (c) 2021 SuYichen.
 #ifdef SERVER
 Core::Core()
 {
+    CPUCoresNum = GetCPUCoresNum();
+    printf("Server is now running on a %d Logical Cores CPU \n",CPUCoresNum);
     Tasks = {};
     MLC = new ModulesListContainer;
-    thread* t1=new thread(&Core::TaskHandler, this);
-    thread* t2=new thread(&Core::TaskHandler, this);
-    thread* t3=new thread(&Core::TaskHandler, this);
-    thread* t4=new thread(&Core::TaskHandler, this);
+    if (CPUCoresNum >= 1)
+    {
+        thread* t1 = new thread(&Core::TaskHandler, this);
+        printf("已启动线程A！\n");
+    }
+    if (CPUCoresNum >= 2)
+    {
+        thread* t2 = new thread(&Core::TaskHandler, this);
+        printf("已启动线程B！\n");
+    }
+    if (CPUCoresNum >= 4) 
+    {
+        thread* t3 = new thread(&Core::TaskHandler, this);
+        printf("已启动线程C！\n");
+    }
+    if (CPUCoresNum >= 8)
+    {
+        thread* t4 = new thread(&Core::TaskHandler, this);
+        printf("已启动线程D！\n");
+    }
 }
 
 Core::~Core()
@@ -51,13 +69,13 @@ void Core::TaskHandler()
 {
     while (true)
     {
-        if (sizeof(Tasks)<0)
+        if (Tasks.size()>0)
         {
             some_mutex.lock();
             TaskInfo info = Tasks[0];
             VectorElementDelete_TaskInfo(info.client, Tasks);
             some_mutex.unlock();
-            switch (Tasks[0].MessageType)
+            switch (Tasks[1].MessageType)
             {
             case GENERATE:
             {

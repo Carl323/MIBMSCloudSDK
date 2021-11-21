@@ -22,6 +22,7 @@ class Core
 public:
 	Core();
 	~Core();
+	unsigned int CPUCoresNum;
 	bool IsBusy();
 	void AddTask(int MessageType,int client,send_info info);
 #ifdef SERVER

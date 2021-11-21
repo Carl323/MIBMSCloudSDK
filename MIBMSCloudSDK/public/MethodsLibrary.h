@@ -8,3 +8,4 @@ ModuleClientInfo VectorErgodic_ModuleClientInfo(int TClientSocket, vector<Module
 void VectorElementDelete_ModuleClientInfo(int TClientSocket, vector<ModuleClientInfo> ModulesList);
 void VectorElementDelete_TaskInfo(int TClientSocket, vector<TaskInfo> Tasks);
 void Delay(int time);
+unsigned int GetCPUCoresNum();

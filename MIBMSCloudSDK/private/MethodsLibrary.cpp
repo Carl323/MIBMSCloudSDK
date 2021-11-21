@@ -4,6 +4,7 @@
 #include <vector>
 #include <ctime>
 #include <string>
+#include <thread>
 using namespace std;
 
 
@@ -42,4 +43,9 @@ void Delay(int time)//timeÎªÃëÊý
 	int T = time * 1000;
 	clock_t now = clock();
 	while (clock() - now < T);
+}
+
+unsigned int GetCPUCoresNum()
+{
+	return std::max(std::thread::hardware_concurrency(),(unsigned int)1);
 }
