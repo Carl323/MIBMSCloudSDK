@@ -21,7 +21,7 @@ int main() {
 			STR[i] = str[i];
 		}
 		STR[str.length()] = '\0';
-		cout << "命令行功能在当前版本SDK未开发完成，已被禁用\n" << endl;
+		cout << "命令行功能在当前版本SDK已被禁用\n" << endl;
 	}
 }
 #endif // SERVER
