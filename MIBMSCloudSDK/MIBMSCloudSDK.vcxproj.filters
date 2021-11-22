@@ -39,7 +39,10 @@
     <ClInclude Include="public\TaskInfo.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="public\FaceRecognitionServer.h">
+    <ClInclude Include="public\JsonHandler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="public\SendHandler.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -62,7 +65,10 @@
     <ClCompile Include="private\main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="private\FaceRecognitionServer.cpp">
+    <ClCompile Include="private\JsonHandler.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="private\SendHandler.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

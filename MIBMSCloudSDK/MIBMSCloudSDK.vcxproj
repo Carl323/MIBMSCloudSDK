@@ -141,22 +141,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="public\Core.h" />
-    <ClInclude Include="public\FaceRecognitionServer.h" />
+    <ClInclude Include="public\JsonHandler.h" />
     <ClInclude Include="public\MethodsLibrary.h" />
     <ClInclude Include="public\MIBMSCloud.h" />
     <ClInclude Include="public\MIBMSCloudApp.h" />
     <ClInclude Include="public\ModulesListContainer.h" />
+    <ClInclude Include="public\SendHandler.h" />
     <ClInclude Include="public\send_info.h" />
     <ClInclude Include="public\ServersManager.h" />
     <ClInclude Include="public\TaskInfo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\Core.cpp" />
-    <ClCompile Include="private\FaceRecognitionServer.cpp" />
+    <ClCompile Include="private\JsonHandler.cpp" />
     <ClCompile Include="private\main.cpp" />
     <ClCompile Include="private\MethodsLibrary.cpp" />
     <ClCompile Include="private\MIBMSCloud.cpp" />
     <ClCompile Include="private\ModulesListContainer.cpp" />
+    <ClCompile Include="private\SendHandler.cpp" />
     <ClCompile Include="private\ServersManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
