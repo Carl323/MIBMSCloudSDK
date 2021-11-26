@@ -85,8 +85,7 @@ void Core::TaskHandler()
         {
             if (RecvTasks.size() > 0)
             {
-                printf("1");
-                some_mutex.lock();
+                some_mutex. lock();
                 RecvTaskInfo info = RecvTasks[0];
                 VectorElementDelete_TaskInfo(info.client, RecvTasks);//导致程序异常退出！！！请及时排查
                 some_mutex.unlock();
@@ -157,7 +156,7 @@ void Core::CommandHandler(int client,  char info_content[1024])
    #ifdef CLIENT
    jsonhandler* JHandler = new jsonhandler;
    bool State = JHandler->_get_Json_value_bool(info_content,"STATE");
-   std::cout << State << std::endl;
+   cout<<State<<endl;
    delete JHandler;
    #endif // CLIENT
 }

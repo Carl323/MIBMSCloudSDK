@@ -10,11 +10,12 @@ using namespace std;
 #ifdef SERVER
 ModuleClientInfo VectorErgodic_ModuleClientInfo(std::string ModuleName, vector<ModuleClientInfo> ModulesList)
 {
-	for (auto iter = ModulesList.begin(); iter != ModulesList.end(); iter++)
+	vector<ModuleClientInfo>::iterator itr = ModulesList.begin();
+	while (itr != Tasks.end())
 	{
-		if ((*iter).ModuleName == ModuleName)
+		if ((*itr).ModuleName == ModuleName)
 		{
-			return *iter;
+			return *itr;
 			break;
 		}
 	}
@@ -24,17 +25,29 @@ ModuleClientInfo VectorErgodic_ModuleClientInfo(std::string ModuleName, vector<M
 
 void VectorElementDelete_ModuleClientInfo(int TClientSocket, vector<ModuleClientInfo> ModulesList)
 {
-	for (auto iter = ModulesList.begin(); iter != ModulesList.end(); iter++)
+	vector<ModuleClientInfo>::iterator itr = ModulesList.begin();
+	while (itr != Tasks.end())
 	{
-		if ((*iter).ClientSocket == TClientSocket) ModulesList.erase(iter);
+		if ((*itr).ClientSocket == TClientSocket)
+		{
+			Tasks.erase(itr);
+			break;
+		}
+		itr++;//这里删除后迭代器会更新出错
 	}
 }
 
 void VectorElementDelete_ModuleClientInfo_ModuleName(std::string ModuleName, vector<ModuleClientInfo> ModulesList)
 {
-	for (auto iter = ModulesList.begin(); iter != ModulesList.end(); iter++)
+	vector<ModuleClientInfo>::iterator itr = ModulesList.begin();
+	while (itr != Tasks.end())
 	{
-		if ((*iter).ModuleName == ModuleName) ModulesList.erase(iter);
+		if ((*itr).ModuleName == ModuleName)
+		{
+			Tasks.erase(itr);
+			break;
+		}
+		itr++;//这里删除后迭代器会更新出错
 	}
 }
 #endif // SERVER
@@ -42,9 +55,15 @@ void VectorElementDelete_ModuleClientInfo_ModuleName(std::string ModuleName, vec
 
 void VectorElementDelete_TaskInfo(int TClientSocket, vector<RecvTaskInfo> Tasks) 
 {
-	for (auto iter = Tasks.begin(); iter != Tasks.end(); iter++)
+	vector<RecvTaskInfo>::iterator itr = Tasks.begin();
+	while (itr != Tasks.end())
 	{
-		if ((*iter).client == TClientSocket) Tasks.erase(iter);
+		if ((*itr).client == TClientSocket)
+		{
+			Tasks.erase(itr);
+			break;
+		}
+		itr++;//这里删除后迭代器会更新出错
 	}
 }
 
