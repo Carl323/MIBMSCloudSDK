@@ -12,6 +12,7 @@ Copyright (c) 2021 SuYichen.
 #include "stdio.h"
 #include <vector>
 #include <mutex>
+#include <SendHandler.h>
 
 class Core
 {
@@ -21,6 +22,7 @@ public:
 	unsigned int CPUCoresNum;
 	bool IsBusy();
 	void AddTask(int client,send_info info);
+	sendhandler* SHandler;
 #ifdef SERVER
 	ModulesListContainer* MLC;
 #endif // Server

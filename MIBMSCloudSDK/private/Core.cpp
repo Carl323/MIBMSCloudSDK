@@ -17,6 +17,7 @@ Core::Core()
     CPUCoresNum = GetCPUCoresNum();
     printf("Server is now running on a %d Logical Cores CPU \n",CPUCoresNum);
     Tasks = {};
+    SHandler=new sendhandler;
     MLC = new ModulesListContainer;
     if (CPUCoresNum >= 1)
     {
