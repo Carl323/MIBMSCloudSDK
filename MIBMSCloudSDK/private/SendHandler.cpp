@@ -11,10 +11,9 @@ sendhandler::~sendhandler()
 
 }
 
-jsonsendler* sendhandler::CreatANewSendTask()
+void sendhandler::CreatANewSendTask(jsonsendler* JSendler)
 {
-	jsonsendler* JSendler = new jsonsendler;
-	return JSendler;
+	JSendler = new jsonsendler;
 }
 
 void sendhandler::AddNewValue_int(jsonsendler* JSender, std::string key, int value)

@@ -80,26 +80,27 @@ void Core::TaskHandler()
                 some_mutex.unlock();
                 jsonhandler* Jhandler = new jsonhandler;
                 int MT = Jhandler->_get_Json_value_int(info.Sinfo.info_content, "MesType");
+                delete Jhandler;
                 switch (MT)
                 {
-                case GENERATE:
+                case GEN:
                 {
                     GenerateNewClient(info.client, info.Sinfo.info_content);
                 }
-                case COMMAND:
+                case COM:
                 {
                     CommandHandler(info.client, info.Sinfo.info_content);
                 }
-                case INFOREPORT:
+                case REP:
                 {
                     InfoReportHandler(info.client, info.Sinfo.info_content);
                 }
-                case ERRORREPORT:
+                case ERR:
 
                 {
                     ErrorReportHandler(info.client, info.Sinfo.info_content);
                 }
-                case WARNINGREPORT:
+                case WAR:
                 {
                     WarningReportHandler(info.client, info.Sinfo.info_content);
                 }

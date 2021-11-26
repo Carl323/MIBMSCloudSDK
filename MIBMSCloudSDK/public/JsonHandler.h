@@ -2,12 +2,6 @@
 
 #include "json\json.h"
 
-#if defined(__clang__) && (__POINTER_WIDTH__ == 64)
-#pragma link "jsoncpp.a"
-#else
-#pragma link "jsoncpp.lib"
-#endif
-
 class jsonhandler
 {
 public:
