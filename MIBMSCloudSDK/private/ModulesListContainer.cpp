@@ -28,8 +28,8 @@ void ModulesListContainer::RemoveClientFromList(ModuleClientInfo ClientInfo)
 {
 	VectorElementDelete_ModuleClientInfo(ClientInfo.ClientSocket, ModulesList);
 }
-int ModulesListContainer::GetModuleSilentSocket(int ClientSocket) {
-	ModuleClientInfo TargetModuleInfo=VectorErgodic_ModuleClientInfo(ClientSocket,ModulesList);
+int ModulesListContainer::GetModuleSilentSocket(std::string ModuleName) {
+	ModuleClientInfo TargetModuleInfo=VectorErgodic_ModuleClientInfo(ModuleName,ModulesList);
 	return TargetModuleInfo.ClientSocket;
 }
 #endif

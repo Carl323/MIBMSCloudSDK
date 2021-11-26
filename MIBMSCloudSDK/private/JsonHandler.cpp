@@ -1,4 +1,10 @@
+/*
+This file is part of MIBMSCloudSystem Project.
+JsonHandler.h/.cpp
+Copyright (c) 2021 SuYichen.
+*/
 #include "JsonHandler.h"
+#include <iostream>
 
 jsonhandler::jsonhandler()
 {
@@ -73,4 +79,5 @@ std::string jsonsendler::OutputJsonString()
 {
 	Json::StyledWriter sw;
 	return sw.write(root);
+	
 }

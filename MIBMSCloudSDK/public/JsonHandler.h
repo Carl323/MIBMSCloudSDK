@@ -1,3 +1,8 @@
+/*
+This file is part of MIBMSCloudSystem Project.
+JsonHandler.h/.cpp
+Copyright (c) 2021 SuYichen.
+*/
 #pragma once
 
 #include "json\json.h"

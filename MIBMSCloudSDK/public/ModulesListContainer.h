@@ -12,6 +12,7 @@ Copyright (c) 2021 SuYichen.
 struct ModuleClientInfo
 {
 	int ClientSocket;
+	std::string ModuleName;
 };
 class ModulesListContainer
 {
@@ -19,7 +20,7 @@ public:
 	ModulesListContainer();
 	void AddClientInfoToList(ModuleClientInfo ClientInfo);
 	void RemoveClientFromList(ModuleClientInfo ClientInfo);
-	int GetModuleSilentSocket(int ClientSocket);
+	int GetModuleSilentSocket(std::string ModuleName);
 private:
 	std::vector<ModuleClientInfo> ModulesList;
 };

@@ -7,20 +7,20 @@
 #include <thread>
 using namespace std;
 
-
-ModuleClientInfo VectorErgodic_ModuleClientInfo(int TClientSocket, vector<ModuleClientInfo> ModulesList)
+#ifdef SERVER
+ModuleClientInfo VectorErgodic_ModuleClientInfo(std::string ModuleName, vector<ModuleClientInfo> ModulesList)
+{
+	for (auto iter = ModulesList.begin(); iter != ModulesList.end(); iter++)
 	{
-		for (auto iter = ModulesList.begin(); iter != ModulesList.end(); iter++)
+		if ((*iter).ModuleName == ModuleName)
 		{
-			if ((*iter).ClientSocket == TClientSocket)
-			{
-				return *iter;
-				break;
-			}
+			return *iter;
+			break;
 		}
-		ModuleClientInfo Empty={NULL};
-		return Empty;
 	}
+	ModuleClientInfo Empty = { NULL };
+	return Empty;
+}
 
 void VectorElementDelete_ModuleClientInfo(int TClientSocket, vector<ModuleClientInfo> ModulesList)
 {
@@ -30,7 +30,10 @@ void VectorElementDelete_ModuleClientInfo(int TClientSocket, vector<ModuleClient
 	}
 }
 
-void VectorElementDelete_TaskInfo(int TClientSocket, vector<TaskInfo> Tasks) 
+#endif // SERVER
+
+
+void VectorElementDelete_TaskInfo(int TClientSocket, vector<RecvTaskInfo> Tasks) 
 {
 	for (auto iter = Tasks.begin(); iter != Tasks.end(); iter++)
 	{
@@ -49,3 +52,4 @@ unsigned int GetCPUCoresNum()
 {
 	return std::max(std::thread::hardware_concurrency(),(unsigned int)1);
 }
+

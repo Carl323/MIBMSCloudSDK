@@ -129,7 +129,7 @@ void client::sendata(char sendbuf[1024])
         sndinfo.info_content[i] = sendbuf[i];
     }
     //清空待发送消息的缓存↓
-    memset(snd_buf, 0, 1032);
+    memset(snd_buf, 0, 1024);
     //结构体转换成字符串↓
     memcpy(snd_buf, &sndinfo, sizeof(sndinfo));
     //将消息发送给服务器
@@ -286,24 +286,6 @@ void server::process()
 
     }
 }
-
-void server::sendata(int TargetClient,char sendbuf[1024])
-{
-    char snd_buf[1024];
-    send_info sndinfo;
-    //清空消息主体的缓存，并将新的消息主体写入结构体↓
-    memset(sndinfo.info_content, 0, sizeof(sndinfo.info_content));
-    for (int i = 0; i < (sizeof(sendbuf)); ++i)
-    {
-        sndinfo.info_content[i] = sendbuf[i];
-    }
-    //清空待发送消息的缓存↓
-    memset(snd_buf, 0, 1024);
-    //结构体转换成字符串↓
-    memcpy(snd_buf, &sndinfo, sizeof(sndinfo)); 
-    //将消息发送给客户端
-    send(TargetClient, snd_buf, sizeof(snd_buf) - 1, 0);
-}
 void server::sendrebootmessage()
 {
 
@@ -338,6 +320,8 @@ send_info Handler::MessageHandler(char buf[1024])
 
 void Handler::TaskDistributor(int client,send_info info)
 {
+    std::cout << "收到上报：\n";
+    std::cout<<info.info_content<<std::endl;
     #ifdef SERVER
     Core* core = Ser->ServerCore;
     #endif // SERVER
@@ -345,7 +329,6 @@ void Handler::TaskDistributor(int client,send_info info)
     Core* core = Cli->ClientCore;
     #endif // CLIENT
     core->AddTask(client,info);
-    
 }
 
 #ifdef SERVER

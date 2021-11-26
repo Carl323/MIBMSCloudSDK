@@ -4,8 +4,11 @@
 #include <vector>
 using namespace std;
 
-ModuleClientInfo VectorErgodic_ModuleClientInfo(int TClientSocket, vector<ModuleClientInfo> ModulesList);
+#ifdef SERVER
+ModuleClientInfo VectorErgodic_ModuleClientInfo(std::string MoudleName, vector<ModuleClientInfo> ModulesList);
 void VectorElementDelete_ModuleClientInfo(int TClientSocket, vector<ModuleClientInfo> ModulesList);
-void VectorElementDelete_TaskInfo(int TClientSocket, vector<TaskInfo> Tasks);
+#endif // SERVER
+
+void VectorElementDelete_TaskInfo(int TClientSocket, vector<RecvTaskInfo> Tasks);
 void Delay(int time);
 unsigned int GetCPUCoresNum();

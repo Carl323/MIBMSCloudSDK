@@ -10,13 +10,14 @@ Copyright (c) 2021 SuYichen.
 #include <mutex>
 #include <thread>
 #include <JsonHandler.h>
+#include <MIBMSCloud.h>
 
 #ifdef SERVER
 Core::Core()
 {
     CPUCoresNum = GetCPUCoresNum();
     printf("Server is now running on a %d Logical Cores CPU \n",CPUCoresNum);
-    Tasks = {};
+    RecvTasks = {};
     SHandler=new sendhandler;
     MLC = new ModulesListContainer;
     if (CPUCoresNum >= 1)
@@ -47,24 +48,29 @@ Core::~Core()
 }
 void Core::AddTask(int client, send_info info)
 {
-    TaskInfo Newinfo = {client,info};
-    Tasks.emplace_back(Newinfo);
+    RecvTaskInfo Newinfo = {client,info};
+    RecvTasks.emplace_back(Newinfo);
 }
 #endif // SERVER
 
 #ifdef CLIENT
 Core::Core()
 {
-    Tasks = {};
+    RecvTasks = {};
 }
 Core::~Core()
 {
+}
+void Core::AddTask(int user, send_info info)
+{
+    RecvTaskInfo Newinfo = { user,info };
+    RecvTasks.emplace_back(Newinfo);
 }
 #endif // CLIENT
 
 bool  Core::IsBusy()
 {
-    return (sizeof(Tasks)>0);
+    return (sizeof(RecvTasks)>0);
 }
 
 void Core::TaskHandler()
@@ -73,11 +79,11 @@ void Core::TaskHandler()
     {
         try
         {
-            if (Tasks.size() > 0)
+            if (RecvTasks.size() > 0)
             {
                 some_mutex.lock();
-                TaskInfo info = Tasks[0];
-                VectorElementDelete_TaskInfo(info.client, Tasks);
+                RecvTaskInfo info = RecvTasks[0];
+                VectorElementDelete_TaskInfo(info.client, RecvTasks);
                 some_mutex.unlock();
                 jsonhandler* Jhandler = new jsonhandler;
                 int MT = Jhandler->_get_Json_value_int(info.Sinfo.info_content, "MesType");

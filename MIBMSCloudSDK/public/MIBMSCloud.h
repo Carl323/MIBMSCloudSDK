@@ -35,7 +35,6 @@ public:
     Core* ServerCore;
     void init();
     void process();
-    void sendata(int TargetClient,char sendbuf[1024]);
     void sendrebootmessage();
     bool canrebootnow();
 private:

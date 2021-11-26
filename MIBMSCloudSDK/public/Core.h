@@ -27,7 +27,7 @@ public:
 	ModulesListContainer* MLC;
 #endif // Server
 private:
-	std::vector<TaskInfo> Tasks;
+	std::vector<RecvTaskInfo> RecvTasks;
 	std::mutex some_mutex;
 	void TaskHandler();
 	void GenerateNewClient(int client, char info_content[1024]);
