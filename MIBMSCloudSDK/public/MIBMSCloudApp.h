@@ -26,4 +26,4 @@ Copyright (c) 2021 SuYichen.
 #define INFOREPORT 2
 #define ERRORREPORT 3
 #define WARNINGREPORT 4
-#define SDKVersion "1.0.3"
+#define SDKVersion "1.0.4"

@@ -3,7 +3,6 @@
 
 struct TaskInfo
 {
-	int MessageType;
 	int client;
 	send_info Sinfo;
 };

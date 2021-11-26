@@ -13,10 +13,6 @@ Copyright (c) 2021 SuYichen.
 #include <vector>
 #include <mutex>
 
-
-
-
-
 class Core
 {
 public:
@@ -24,7 +20,7 @@ public:
 	~Core();
 	unsigned int CPUCoresNum;
 	bool IsBusy();
-	void AddTask(int MessageType,int client,send_info info);
+	void AddTask(int client,send_info info);
 #ifdef SERVER
 	ModulesListContainer* MLC;
 #endif // Server

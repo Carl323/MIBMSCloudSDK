@@ -8,7 +8,7 @@ Copyright (c) 2021 SuYichen.
 #include "Core.h"
 #include "send_info.h"
 #include "stdio.h"
-#include "MIBMSCloudApp.h"
+
 
 #ifdef CLIENT
 client::client()
@@ -22,7 +22,7 @@ client::client()
 
 }
 
-client:~client() 
+client::~client()
 {
     delete ClientCore;
 }
@@ -118,29 +118,18 @@ void client::process()
 
 }
 
-void client::sendata(int MesType,char ModuleName[20],char sendbuf[1024])
+void client::sendata(char sendbuf[1024])
 {
     char snd_buf[1024];
     send_info sndinfo;
-    //清空消息类型的缓存，并将新的消息类型写入结构体↓
-    sndinfo.MessageType = 0;
-    sndinfo.MessageType = MesType;
-    //清空目标模块名称的缓存，并将新的模块名称写入结构体↓
-    memset(sndinfo.ModuleID, 0, sizeof(sndinfo.MessageType));
-    for (int i = 0; i < (sizeof(ModuleName)); ++i)
-    {
-        sndinfo.ModuleID[i] = ModuleName[i];
-    }
     //清空消息主体的缓存，并将新的消息主体写入结构体↓
     memset(sndinfo.info_content, 0, sizeof(sndinfo.info_content));
     for (int i = 0; i < (sizeof(sendbuf)); ++i)
     {
         sndinfo.info_content[i] = sendbuf[i];
     }
-    //计算结构体中主体消息的大小↓
-    sndinfo.info_length = sizeof(sendbuf[1024]) - 1;
     //清空待发送消息的缓存↓
-    memset(snd_buf, 0, 1024);
+    memset(snd_buf, 0, 1032);
     //结构体转换成字符串↓
     memcpy(snd_buf, &sndinfo, sizeof(sndinfo));
     //将消息发送给服务器
@@ -298,23 +287,18 @@ void server::process()
     }
 }
 
-void server::sendata(int TargetClient,int MesType,char ModuleName[20],char sendbuf[1024])
+void server::sendata(int TargetClient,char sendbuf[1024])
 {
-    char snd_buf[1032];
+    char snd_buf[1024];
     send_info sndinfo;
-    //清空消息类型的缓存，并将新的消息类型写入结构体↓
-    sndinfo.MessageType=0;
-    sndinfo.MessageType = MesType;
     //清空消息主体的缓存，并将新的消息主体写入结构体↓
     memset(sndinfo.info_content, 0, sizeof(sndinfo.info_content));
     for (int i = 0; i < (sizeof(sendbuf)); ++i)
     {
         sndinfo.info_content[i] = sendbuf[i];
     }
-    //计算结构体中主体消息的大小↓
-    sndinfo.info_length = sizeof(sendbuf[1024])-1;
     //清空待发送消息的缓存↓
-    memset(snd_buf, 0, 1032);
+    memset(snd_buf, 0, 1024);
     //结构体转换成字符串↓
     memcpy(snd_buf, &sndinfo, sizeof(sndinfo)); 
     //将消息发送给客户端
@@ -360,7 +344,7 @@ void Handler::TaskDistributor(int client,send_info info)
     #ifdef CLIENT
     Core* core = Cli->ClientCore;
     #endif // CLIENT
-
+    core->AddTask(client,info);
     
 }
 

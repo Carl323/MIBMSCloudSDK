@@ -9,6 +9,7 @@ Copyright (c) 2021 SuYichen.
 #include <vector>
 #include <mutex>
 #include <thread>
+#include <JsonHandler.h>
 
 #ifdef SERVER
 Core::Core()
@@ -43,9 +44,9 @@ Core::~Core()
 {
     delete MLC;
 }
-void Core::AddTask(int MessageType, int client, send_info info)
+void Core::AddTask(int client, send_info info)
 {
-    TaskInfo Newinfo = { MessageType,client,info };
+    TaskInfo Newinfo = {client,info};
     Tasks.emplace_back(Newinfo);
 }
 #endif // SERVER
@@ -69,43 +70,53 @@ void Core::TaskHandler()
 {
     while (true)
     {
-        if (Tasks.size()>0)
+        try
         {
-            some_mutex.lock();
-            TaskInfo info = Tasks[0];
-            VectorElementDelete_TaskInfo(info.client, Tasks);
-            some_mutex.unlock();
-            switch (Tasks[1].MessageType)
+            if (Tasks.size() > 0)
             {
-            case GENERATE:
+                some_mutex.lock();
+                TaskInfo info = Tasks[0];
+                VectorElementDelete_TaskInfo(info.client, Tasks);
+                some_mutex.unlock();
+                jsonhandler* Jhandler = new jsonhandler;
+                int MT = Jhandler->_get_Json_value_int(info.Sinfo.info_content, "MesType");
+                switch (MT)
+                {
+                case GENERATE:
+                {
+                    GenerateNewClient(info.client, info.Sinfo.info_content);
+                }
+                case COMMAND:
+                {
+                    CommandHandler(info.client, info.Sinfo.info_content);
+                }
+                case INFOREPORT:
+                {
+                    InfoReportHandler(info.client, info.Sinfo.info_content);
+                }
+                case ERRORREPORT:
+
+                {
+                    ErrorReportHandler(info.client, info.Sinfo.info_content);
+                }
+                case WARNINGREPORT:
+                {
+                    WarningReportHandler(info.client, info.Sinfo.info_content);
+                }
+                default:
+                    break;
+                }
+            }
+            else
             {
-                GenerateNewClient(info.client, info.Sinfo.info_content);
-            }
-            case COMMAND:
-            {  
-                CommandHandler(info.client, info.Sinfo.info_content);
-            }
-            case INFOREPORT:
-            {
-                InfoReportHandler(info.client, info.Sinfo.info_content);
-            }
-            case ERRORREPORT:
-                
-            {
-                ErrorReportHandler(info.client, info.Sinfo.info_content);
-            }
-            case WARNINGREPORT:
-            {    
-                WarningReportHandler(info.client, info.Sinfo.info_content);
-            }
-            default:  
-                break;
+                Delay(1);
             }
         }
-        else
+        catch (const std::exception&)
         {
-            Delay(1);
+            printf_s("\nTask Handler Error£¡\n");
         }
+        
     }
 }
 

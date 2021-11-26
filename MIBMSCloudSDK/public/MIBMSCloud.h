@@ -26,8 +26,6 @@ Copyright (c) 2021 SuYichen.
 #include <unistd.h>//∂®“Âsocklen_t
 #endif
 
-
-
 #ifdef SERVER
 class server
 {
@@ -37,7 +35,7 @@ public:
     Core* ServerCore;
     void init();
     void process();
-    void sendata(int TargetClient, int MesType, char ModuleName[20], char sendbuf[1024]);
+    void sendata(int TargetClient,char sendbuf[1024]);
     void sendrebootmessage();
     bool canrebootnow();
 private:
@@ -53,11 +51,11 @@ class client
 {
 public:
     client();
-    ~client()
+    ~client();
     Core* ClientCore;
     void init();
     void process();
-    void sendata(int MesType,char ModuleName[20],char sendbuf[1024]);
+    void sendata(char sendbuf[1024]);
 
 private:
     int user;
