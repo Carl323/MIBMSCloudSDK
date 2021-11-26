@@ -57,6 +57,8 @@ void Core::AddTask(int client, send_info info)
 Core::Core()
 {
     RecvTasks = {};
+    thread* t1 = new thread(&Core::TaskHandler, this);
+    SHandler = new sendhandler;
 }
 Core::~Core()
 {
@@ -67,6 +69,8 @@ void Core::AddTask(int user, send_info info)
     RecvTasks.emplace_back(Newinfo);
 }
 #endif // CLIENT
+
+
 
 bool  Core::IsBusy()
 {
@@ -81,9 +85,10 @@ void Core::TaskHandler()
         {
             if (RecvTasks.size() > 0)
             {
+                printf("1");
                 some_mutex.lock();
                 RecvTaskInfo info = RecvTasks[0];
-                VectorElementDelete_TaskInfo(info.client, RecvTasks);
+                VectorElementDelete_TaskInfo(info.client, RecvTasks);//导致程序异常退出！！！请及时排查
                 some_mutex.unlock();
                 jsonhandler* Jhandler = new jsonhandler;
                 int MT = Jhandler->_get_Json_value_int(info.Sinfo.info_content, "MesType");
@@ -131,7 +136,11 @@ void Core::TaskHandler()
 void Core::GenerateNewClient(int client, char info_content[1024])
 {
     #ifdef SERVER
-
+    std::string ModuleName;
+    jsonhandler* JHandler=new jsonhandler;
+    ModuleName=JHandler->_get_Json_value_string(info_content, "ModuleName");
+    ModuleClientInfo MCInfo={client,ModuleName};
+    MLC->AddClientInfoToList(MCInfo);
     #endif//  SERVER
     #ifdef CLIENT
 
@@ -146,7 +155,10 @@ void Core::CommandHandler(int client,  char info_content[1024])
 
    #endif//  SERVER
    #ifdef CLIENT
-
+   jsonhandler* JHandler = new jsonhandler;
+   bool State = JHandler->_get_Json_value_bool(info_content,"STATE");
+   std::cout << State << std::endl;
+   delete JHandler;
    #endif // CLIENT
 }
 
@@ -182,3 +194,4 @@ void Core::WarningReportHandler(int client,char info_content[1024])
     #endif // CLIENT
 
 }
+

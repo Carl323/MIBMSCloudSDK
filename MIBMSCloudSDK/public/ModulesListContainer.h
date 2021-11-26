@@ -7,6 +7,7 @@ Copyright (c) 2021 SuYichen.
 #include "MIBMSCloudApp.h"
 #include <stdio.h>
 #include <vector>
+#include <string>
 
 #ifdef  SERVER
 struct ModuleClientInfo
@@ -20,6 +21,7 @@ public:
 	ModulesListContainer();
 	void AddClientInfoToList(ModuleClientInfo ClientInfo);
 	void RemoveClientFromList(ModuleClientInfo ClientInfo);
+	void RemoveModuleFromList(std::string ModuleName);
 	int GetModuleSilentSocket(std::string ModuleName);
 private:
 	std::vector<ModuleClientInfo> ModulesList;

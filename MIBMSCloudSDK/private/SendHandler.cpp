@@ -49,8 +49,6 @@ void sendhandler::SendJson(int TargetSocket, jsonsendler* JSender)
     for (i = 0; i < TargetStr.length(); i++)
         p[i] = TargetStr[i];
     p[i] = '\0';
-    std::cout << "下发信息：\n";
-    std::cout << p<< std::endl;
     send(TargetSocket, p, sizeof(p) - 1, 0);
 }
 

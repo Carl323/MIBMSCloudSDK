@@ -5,10 +5,10 @@ Copyright (c) 2021 SuYichen.
 */
 #pragma once
 //如果开发的是服务端，请去掉下一行的注释符号
-#define SERVER
+//#define SERVER
 
 //如果开发的是客户端(终端)，请去掉下一行的注释符号
-//#define CLIENT
+#define CLIENT
 
 //如果平台是WINDOWS,请去掉下一行的注释符号
 #define WINDOWS

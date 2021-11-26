@@ -54,10 +54,10 @@ public:
     Core* ClientCore;
     void init();
     void process();
-    void sendata(char sendbuf[1024]);
+    int user;
+
 
 private:
-    int user;
     int writing;
     sockaddr_in  serverAddr;//IPV4的地址方式包括服务端地址族、服务端IP地址、服务端端口号
 };

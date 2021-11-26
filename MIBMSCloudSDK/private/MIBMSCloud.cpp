@@ -8,6 +8,7 @@ Copyright (c) 2021 SuYichen.
 #include "Core.h"
 #include "send_info.h"
 #include "stdio.h"
+#include "MethodsLibrary.h"
 
 
 #ifdef CLIENT
@@ -19,7 +20,7 @@ client::client()
     serverAddr.sin_family = PF_INET;
     serverAddr.sin_port = SERVER_PORT;
     inet_pton(AF_INET, SERVER_IP, &serverAddr.sin_addr.s_addr);//将字符串类型转换uint32_t
-
+    std::thread* CP = new std::thread(&client::process, this);
 }
 
 client::~client()
@@ -95,6 +96,11 @@ void client::process()
                 {
                     printf("server:%s\n", recvbuf);
                     memset(recvbuf, '\0', sizeof(recvbuf));
+                    Handler* handler = new Handler;
+                    handler->SetOwner(this);
+                    send_info RecvCon = handler->MessageHandler(recvbuf);
+                    handler->TaskDistributor(user, RecvCon);
+                    Delay(1);
                 }
                 else if (size == 0)
                 {
@@ -116,24 +122,6 @@ void client::process()
 
     }
 
-}
-
-void client::sendata(char sendbuf[1024])
-{
-    char snd_buf[1024];
-    send_info sndinfo;
-    //清空消息主体的缓存，并将新的消息主体写入结构体↓
-    memset(sndinfo.info_content, 0, sizeof(sndinfo.info_content));
-    for (int i = 0; i < (sizeof(sendbuf)); ++i)
-    {
-        sndinfo.info_content[i] = sendbuf[i];
-    }
-    //清空待发送消息的缓存↓
-    memset(snd_buf, 0, 1024);
-    //结构体转换成字符串↓
-    memcpy(snd_buf, &sndinfo, sizeof(sndinfo));
-    //将消息发送给服务器
-    send(user, snd_buf, sizeof(snd_buf) - 1, 0);
 }
 #endif
 
@@ -318,17 +306,15 @@ send_info Handler::MessageHandler(char buf[1024])
     return clt;
 }
 
-void Handler::TaskDistributor(int client,send_info info)
+void Handler::TaskDistributor(int Socket,send_info info)
 {
-    std::cout << "收到上报：\n";
-    std::cout<<info.info_content<<std::endl;
     #ifdef SERVER
     Core* core = Ser->ServerCore;
     #endif // SERVER
     #ifdef CLIENT
     Core* core = Cli->ClientCore;
     #endif // CLIENT
-    core->AddTask(client,info);
+    core->AddTask(Socket,info);
 }
 
 #ifdef SERVER

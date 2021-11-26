@@ -33,7 +33,9 @@ int main() {
 	SH->AddNewValue_int(JSender, "MesType", 1);
 	SH->AddNewValue_string(JSender, "ModuleName", "LCD001");
 	SH->AddNewValue_bool(JSender, "STATE",state);
-	SH->SendJson(0,JSender);
+	Core* SC = SM->GetServer()->ServerCore;
+	int ts=SC->MLC->GetModuleSilentSocket("LCD001");
+	if(ts!=0)SH->SendJson(ts,JSender);
 	Delay(2);
 	}
 	return 0;
@@ -43,18 +45,15 @@ int main() {
 #ifdef CLIENT
 int main()
 {
-	client cli;
-	cli.process();
-	while (true)
+	client* cli=new client;
+	jsonsendler* JSender = NULL;
+	sendhandler* SH = cli->ClientCore->SHandler;
+	JSender = SH->CreatANewSendTask();
+	SH->AddNewValue_int(JSender, "MesType", 0);
+	SH->AddNewValue_string(JSender, "ModuleName", "LCD001");
+	SH->SendJson(cli->user, JSender);
+	while (1)
 	{
-		jsonsendler* JSender = NULL;
-		sendhandler* SH = cli.ClientCore->SHandler;
-		JSender = SH->CreatANewSendTask();
-		SH->AddNewValue_int(JSender, "MesType", 2);
-		SH->AddNewValue_string(JSender, "ModuleName", "LCD001");
-		SH->AddNewValue_string(JSender, "STATE", "ON");
-		SH->SendJson(cli.user, JSender);
 	}
-	return 0;
 }
 #endif // CLIENT

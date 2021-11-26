@@ -30,6 +30,13 @@ void VectorElementDelete_ModuleClientInfo(int TClientSocket, vector<ModuleClient
 	}
 }
 
+void VectorElementDelete_ModuleClientInfo_ModuleName(std::string ModuleName, vector<ModuleClientInfo> ModulesList)
+{
+	for (auto iter = ModulesList.begin(); iter != ModulesList.end(); iter++)
+	{
+		if ((*iter).ModuleName == ModuleName) ModulesList.erase(iter);
+	}
+}
 #endif // SERVER
 
 

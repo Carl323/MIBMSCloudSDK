@@ -7,6 +7,7 @@ using namespace std;
 #ifdef SERVER
 ModuleClientInfo VectorErgodic_ModuleClientInfo(std::string MoudleName, vector<ModuleClientInfo> ModulesList);
 void VectorElementDelete_ModuleClientInfo(int TClientSocket, vector<ModuleClientInfo> ModulesList);
+void VectorElementDelete_ModuleClientInfo_ModuleName(std::string ModuleName, vector<ModuleClientInfo> ModulesList);
 #endif // SERVER
 
 void VectorElementDelete_TaskInfo(int TClientSocket, vector<RecvTaskInfo> Tasks);
