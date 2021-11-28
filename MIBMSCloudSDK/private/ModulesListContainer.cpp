@@ -32,6 +32,9 @@ void ModulesListContainer::AddClientInfoToList(ModuleClientInfo ClientInfo)
 }
 void ModulesListContainer::RemoveClientFromList(int Client)
 {
+	cout << "Ä£¿é ";
+	cout <<GetModuleName(Client);
+	cout << " ÒÑ×¢Ïú£¡" << endl;
 	VectorElementDelete_ModuleClientInfo(Client, ModulesList);
 }
 void ModulesListContainer::RemoveModuleFromList(std::string ModuleName)

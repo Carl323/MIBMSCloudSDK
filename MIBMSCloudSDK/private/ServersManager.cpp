@@ -11,7 +11,9 @@ Copyright (c) 2021 SuYichen.
 #ifdef SERVER
 ServersManager::ServersManager()
 {
+	SetColor(120,20);
 	printf("      ---MIBMSCloudServer---      \n");
+	SetColor(5, 0);
 	printf("服务器初始化中...\n");
 	theserver = new server;
 	SP = new std::thread(&server::process, theserver);

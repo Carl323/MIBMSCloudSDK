@@ -24,9 +24,9 @@ public:
 	void AddTask(int client,send_info info);
 	sendhandler* SHandler;
 #ifdef SERVER
-	ModulesListContainer* MLC;
 	void ModuleLogout(int client);
 	std::string FindModule(int client);
+	ModulesListContainer* MLC;
 #endif // Server
 private:
 	std::vector<RecvTaskInfo> RecvTasks;

@@ -11,28 +11,25 @@ using namespace std;
 #ifdef SERVER
 ModuleClientInfo VectorErgodic_ModuleClientInfo_MN(std::string ModuleName, vector<ModuleClientInfo> ModulesList)
 {
-	vector<ModuleClientInfo>::iterator itr = ModulesList.begin();
 	ModuleClientInfo titr = {};
-	while (itr != ModulesList.end())
+	for (int i = 0; i < ModulesList.size(); i++)
 	{
-		if ((*itr).ModuleName == ModuleName)
+		if (ModulesList[i].ModuleName == ModuleName)
 		{
-			titr = (*itr);
+			return ModulesList[i];
 			break;
 		}
 	}
-	return titr;
 }//按照ModuleName从ModuleList中获取整个ModuleClientInfo，如果不存在则返回一个空的ModuleClientInfo。
 
 ModuleClientInfo VectorErgodic_ModuleClientInfo_CN(int clientsocket, vector<ModuleClientInfo> ModulesList)
 {
-	vector<ModuleClientInfo>::iterator itr = ModulesList.begin();
 	ModuleClientInfo titr = {};
-	while (itr != ModulesList.end())
+	for (int i = 0; i < ModulesList.size(); i++)
 	{
-		if ((*itr).ClientSocket == clientsocket)
+		if (ModulesList[i].ClientSocket == clientsocket)
 		{
-			titr = (*itr);
+			return ModulesList[i];
 			break;
 		}
 	}
@@ -41,29 +38,25 @@ ModuleClientInfo VectorErgodic_ModuleClientInfo_CN(int clientsocket, vector<Modu
 
 void VectorElementDelete_ModuleClientInfo(int TClientSocket, vector<ModuleClientInfo> ModulesList)
 {
-	vector<ModuleClientInfo>::iterator itr = ModulesList.begin();
-	while (itr != ModulesList.end())
+	for(int i=0;i<ModulesList.size();i++)
 	{
-		if ((*itr).ClientSocket == TClientSocket)
+		if (ModulesList[i].ClientSocket == TClientSocket) 
 		{
-			ModulesList.erase(itr);
+			ModulesList.erase(ModulesList.begin() + i);
 			break;
 		}
-		itr++;//这里删除后迭代器会更新出错
 	}
 }
 
 void VectorElementDelete_ModuleClientInfo_ModuleName(std::string ModuleName, vector<ModuleClientInfo> ModulesList)
 {
-	vector<ModuleClientInfo>::iterator itr = ModulesList.begin();
-	while (itr != ModulesList.end())
+	for (int i = 0; i < ModulesList.size(); i++)
 	{
-		if ((*itr).ModuleName == ModuleName)
+		if (ModulesList[i].ModuleName == ModuleName)
 		{
-			ModulesList.erase(itr);
+			ModulesList.erase(ModulesList.begin() + i);
 			break;
 		}
-		itr++;//这里删除后迭代器会更新出错
 	}
 }
 #endif // SERVER
@@ -71,15 +64,13 @@ void VectorElementDelete_ModuleClientInfo_ModuleName(std::string ModuleName, vec
 
 void VectorElementDelete_TaskInfo(int TClientSocket, vector<RecvTaskInfo> Tasks) 
 {
-	vector<RecvTaskInfo>::iterator itr = Tasks.begin();
-	while (itr != Tasks.end())
+	for (int i = 0; i < Tasks.size(); i++)
 	{
-		if ((*itr).client == TClientSocket)
+		if (Tasks[i].client == TClientSocket)
 		{
-			Tasks.erase(itr);
+			Tasks.erase(Tasks.begin() + i);
 			break;
 		}
-		itr++;//这里删除后迭代器会更新出错
 	}
 }
 

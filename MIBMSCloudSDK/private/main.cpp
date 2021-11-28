@@ -9,7 +9,9 @@
 int main() {
 	ServersManager* SM = new ServersManager;
 	Delay(1.5);
-	printf("MIBMSCloudServer->");
+	SetColor(30, 50);
+	printf("MIBMSCloudServer->WORKING\n");
+	SetColor(1, 0);
 	while (true)
 	{
 		/*std::string str;

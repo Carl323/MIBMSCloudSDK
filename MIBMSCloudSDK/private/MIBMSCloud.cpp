@@ -194,11 +194,12 @@ void server::process()
     init();
     //下面就是不断的检查
     printf("监听服务启动\n");
+    SetColor(120, 20);
     printf("--Powerd By MIBMSCloudSDK V%s--\n",SDKVersion);
+    SetColor(1,0);
     vector<int> SWD;
     while (1)
     {
-        cout << "\n processing \n" << endl;
         mount = socnum.size();
         //将fds每次都重新赋值
         for (int i = 0; i < mount; ++i)
@@ -206,7 +207,7 @@ void server::process()
             FD_SET(socnum[i], &fds);
         }
 
-        struct timeval timeout = { 1,0 };//每个Select等待三秒
+        struct timeval timeout = { 0,50000 };//每个Select等待三秒
         switch (select(0, &fds, NULL, NULL, &timeout))
         {
         case -1:
@@ -245,8 +246,9 @@ void server::process()
                     char buf[30] = "欢迎使用智能楼宇云服务！\n";
                     strcat_s(ID, buf);
                     send(clientfd, ID, sizeof(ID) - 1, 0);//减去最后一个'/0'
+
                 }
-                if (i != 0 && FD_ISSET(socnum[i], &fds))
+                else if (i != 0 && FD_ISSET(socnum[i], &fds))
                 {
                     char buf[1024];
                     memset(buf, '\0', sizeof(buf));
@@ -255,8 +257,7 @@ void server::process()
                     if (size == 0 || size == -1)
                     {
                         closesocket(socnum[i]);//先关闭这个套接字
-                        cout << "\n模块 "+ ServerCore->FindModule(socnum[i]) +"  已注销" << endl;
-                        //ServerCore->ModuleLogout(socnum[i]);//从业务中注销该ModuleClient
+                        ServerCore->ModuleLogout(socnum[i]);//从业务中注销该ModuleClient
                         SWD.push_back(i);
                     }
                     //若是没有掉线
