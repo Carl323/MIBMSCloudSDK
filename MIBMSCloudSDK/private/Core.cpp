@@ -20,26 +20,15 @@ Core::Core()
     RecvTasks = {};
     SHandler=new sendhandler;
     MLC = new ModulesListContainer;
-    if (CPUCoresNum >= 1)
-    {
-        thread* t1 = new thread(&Core::TaskHandler, this);
-        printf("已启动线程A！\n");
-    }
-    /*if (CPUCoresNum >= 2)
-    {
-        thread* t2 = new thread(&Core::TaskHandler, this);
-        printf("已启动线程B！\n");
-    }
-    if (CPUCoresNum >= 4) 
-    {
-        thread* t3 = new thread(&Core::TaskHandler, this);
-        printf("已启动线程C！\n");
-    }
-    if (CPUCoresNum >= 8)
-    {
-        thread* t4 = new thread(&Core::TaskHandler, this);
-        printf("已启动线程D！\n"); 
-    }*/
+    thread* t1 = new thread(&Core::TaskHandler, this);
+    printf("已启动线程A！\n");
+    thread* t2 = new thread(&Core::TaskHandler, this);
+    printf("已启动线程B！\n");
+    thread* t3 = new thread(&Core::TaskHandler, this);
+    printf("已启动线程C！\n");
+    thread* t4 = new thread(&Core::TaskHandler, this);
+    printf("已启动线程D！\n");
+    
 }
 
 Core::~Core()
@@ -48,6 +37,7 @@ Core::~Core()
 }
 void Core::AddTask(int client, send_info info)
 {
+    
     RecvTaskInfo Newinfo = {client,info};
     RecvTasks.emplace_back(Newinfo);
 }
@@ -89,54 +79,47 @@ void Core::TaskHandler()
 {
     while (true)
     {
-        try
+        some_mutex.lock();
+        if (RecvTasks.size() > 0)
         {
-            if (RecvTasks.size() > 0)
+            RecvTaskInfo info = RecvTasks[0];
+            RecvTasks.erase(RecvTasks.begin());
+            some_mutex.unlock();
+            jsonhandler* Jhandler = new jsonhandler;
+            int MT = Jhandler->_get_Json_value_int(info.Sinfo.info_content, "MesType");
+            delete Jhandler;
+            switch (MT)
             {
-                //some_mutex. lock();
-                RecvTaskInfo info = RecvTasks[0];
-                RecvTasks.erase(RecvTasks.begin());
-                //some_mutex.unlock();
-                jsonhandler* Jhandler = new jsonhandler;
-                int MT = Jhandler->_get_Json_value_int(info.Sinfo.info_content, "MesType");
-                delete Jhandler;
-                switch (MT)
-                {
-                case GEN:
-                {
-                    GenerateNewClient(info.client, info.Sinfo.info_content);
-                }
-                case COM:
-                {
-                    CommandHandler(info.client, info.Sinfo.info_content);
-                }
-                case REP:
-                {
-                    InfoReportHandler(info.client, info.Sinfo.info_content);
-                }
-                case ERR:
+            case GEN:
+            {
+                GenerateNewClient(info.client, info.Sinfo.info_content);
+            }
+            case COM:
+            {
+                CommandHandler(info.client, info.Sinfo.info_content);
+            }
+            case REP:
+            {
+                InfoReportHandler(info.client, info.Sinfo.info_content);
+            }
+            case ERR:
 
-                {
-                    ErrorReportHandler(info.client, info.Sinfo.info_content);
-                }
-                case WAR:
-                {
-                    WarningReportHandler(info.client, info.Sinfo.info_content);
-                }
-                default:
-                    break;
-                }
-            }
-            else
             {
-                Delay(1);
+                ErrorReportHandler(info.client, info.Sinfo.info_content);
+            }
+            case WAR:
+            {
+                WarningReportHandler(info.client, info.Sinfo.info_content);
+            }
+            default:
+                break;
             }
         }
-        catch (const std::exception&)
+        else
         {
-            printf_s("\nTask Handler Error！\n");
+            some_mutex.unlock();
+            Delay(1);
         }
-        
     }
 }
 
