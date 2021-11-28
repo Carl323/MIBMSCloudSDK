@@ -25,7 +25,7 @@ Core::Core()
         thread* t1 = new thread(&Core::TaskHandler, this);
         printf("已启动线程A！\n");
     }
-    if (CPUCoresNum >= 2)
+    /*if (CPUCoresNum >= 2)
     {
         thread* t2 = new thread(&Core::TaskHandler, this);
         printf("已启动线程B！\n");
@@ -38,8 +38,8 @@ Core::Core()
     if (CPUCoresNum >= 8)
     {
         thread* t4 = new thread(&Core::TaskHandler, this);
-        printf("已启动线程D！\n");
-    }
+        printf("已启动线程D！\n"); 
+    }*/
 }
 
 Core::~Core()
@@ -50,6 +50,14 @@ void Core::AddTask(int client, send_info info)
 {
     RecvTaskInfo Newinfo = {client,info};
     RecvTasks.emplace_back(Newinfo);
+}
+void Core::ModuleLogout(int client)
+{
+    MLC->RemoveClientFromList(client);
+}
+std::string Core::FindModule(int client)
+{
+    return MLC->GetModuleName(client);
 }
 #endif // SERVER
 
@@ -85,10 +93,10 @@ void Core::TaskHandler()
         {
             if (RecvTasks.size() > 0)
             {
-                some_mutex. lock();
+                //some_mutex. lock();
                 RecvTaskInfo info = RecvTasks[0];
-                VectorElementDelete_TaskInfo(info.client, RecvTasks);//导致程序异常退出！！！请及时排查
-                some_mutex.unlock();
+                RecvTasks.erase(RecvTasks.begin());
+                //some_mutex.unlock();
                 jsonhandler* Jhandler = new jsonhandler;
                 int MT = Jhandler->_get_Json_value_int(info.Sinfo.info_content, "MesType");
                 delete Jhandler;
@@ -132,6 +140,8 @@ void Core::TaskHandler()
     }
 }
 
+
+
 void Core::GenerateNewClient(int client, char info_content[1024])
 {
     #ifdef SERVER
@@ -139,6 +149,7 @@ void Core::GenerateNewClient(int client, char info_content[1024])
     jsonhandler* JHandler=new jsonhandler;
     ModuleName=JHandler->_get_Json_value_string(info_content, "ModuleName");
     ModuleClientInfo MCInfo={client,ModuleName};
+    cout << "模块 "+ModuleName+" 已注册！" << endl;
     MLC->AddClientInfoToList(MCInfo);
     #endif//  SERVER
     #ifdef CLIENT
@@ -156,7 +167,6 @@ void Core::CommandHandler(int client,  char info_content[1024])
    #ifdef CLIENT
    jsonhandler* JHandler = new jsonhandler;
    bool State = JHandler->_get_Json_value_bool(info_content,"STATE");
-   cout<<State<<endl;
    delete JHandler;
    #endif // CLIENT
 }

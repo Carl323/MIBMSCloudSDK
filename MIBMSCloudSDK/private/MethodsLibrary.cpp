@@ -5,32 +5,48 @@
 #include <ctime>
 #include <string>
 #include <thread>
+
 using namespace std;
 
 #ifdef SERVER
-ModuleClientInfo VectorErgodic_ModuleClientInfo(std::string ModuleName, vector<ModuleClientInfo> ModulesList)
+ModuleClientInfo VectorErgodic_ModuleClientInfo_MN(std::string ModuleName, vector<ModuleClientInfo> ModulesList)
 {
 	vector<ModuleClientInfo>::iterator itr = ModulesList.begin();
-	while (itr != Tasks.end())
+	ModuleClientInfo titr = {};
+	while (itr != ModulesList.end())
 	{
 		if ((*itr).ModuleName == ModuleName)
 		{
-			return *itr;
+			titr = (*itr);
 			break;
 		}
 	}
-	ModuleClientInfo Empty = { NULL };
-	return Empty;
-}
+	return titr;
+}//按照ModuleName从ModuleList中获取整个ModuleClientInfo，如果不存在则返回一个空的ModuleClientInfo。
+
+ModuleClientInfo VectorErgodic_ModuleClientInfo_CN(int clientsocket, vector<ModuleClientInfo> ModulesList)
+{
+	vector<ModuleClientInfo>::iterator itr = ModulesList.begin();
+	ModuleClientInfo titr = {};
+	while (itr != ModulesList.end())
+	{
+		if ((*itr).ClientSocket == clientsocket)
+		{
+			titr = (*itr);
+			break;
+		}
+	}
+	return titr;
+}//按照ClientSocket从ModuleList中获取整个ModuleClientInfo，如果不存在则返回一个空的ModuleClientInfo。
 
 void VectorElementDelete_ModuleClientInfo(int TClientSocket, vector<ModuleClientInfo> ModulesList)
 {
 	vector<ModuleClientInfo>::iterator itr = ModulesList.begin();
-	while (itr != Tasks.end())
+	while (itr != ModulesList.end())
 	{
 		if ((*itr).ClientSocket == TClientSocket)
 		{
-			Tasks.erase(itr);
+			ModulesList.erase(itr);
 			break;
 		}
 		itr++;//这里删除后迭代器会更新出错
@@ -40,11 +56,11 @@ void VectorElementDelete_ModuleClientInfo(int TClientSocket, vector<ModuleClient
 void VectorElementDelete_ModuleClientInfo_ModuleName(std::string ModuleName, vector<ModuleClientInfo> ModulesList)
 {
 	vector<ModuleClientInfo>::iterator itr = ModulesList.begin();
-	while (itr != Tasks.end())
+	while (itr != ModulesList.end())
 	{
 		if ((*itr).ModuleName == ModuleName)
 		{
-			Tasks.erase(itr);
+			ModulesList.erase(itr);
 			break;
 		}
 		itr++;//这里删除后迭代器会更新出错
@@ -79,3 +95,9 @@ unsigned int GetCPUCoresNum()
 	return std::max(std::thread::hardware_concurrency(),(unsigned int)1);
 }
 
+#include <Windows.h>
+void SetColor(unsigned short forecolor, unsigned short backgroudcolor)
+{
+	HANDLE hCon = GetStdHandle(STD_OUTPUT_HANDLE); //获取缓冲区句柄
+	SetConsoleTextAttribute(hCon, forecolor | backgroudcolor); //设置文本及背景色
+}

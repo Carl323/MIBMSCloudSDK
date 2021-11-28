@@ -19,8 +19,9 @@ class ModulesListContainer
 {
 public:
 	ModulesListContainer();
+	std::string GetModuleName(int Client);
 	void AddClientInfoToList(ModuleClientInfo ClientInfo);
-	void RemoveClientFromList(ModuleClientInfo ClientInfo);
+	void RemoveClientFromList(int Client);
 	void RemoveModuleFromList(std::string ModuleName);
 	int GetModuleSilentSocket(std::string ModuleName);
 private:

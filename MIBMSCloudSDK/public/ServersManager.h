@@ -13,10 +13,12 @@ class ServersManager
 public:
 	ServersManager();
 	~ServersManager();
+	void Tick();
 	void Reboot(bool Forced);
 	server* GetServer();
 private:
 	server* theserver;
+	thread* SP;
 };
 #endif // SERVER
 

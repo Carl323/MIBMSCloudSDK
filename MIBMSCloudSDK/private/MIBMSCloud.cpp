@@ -20,7 +20,6 @@ client::client()
     serverAddr.sin_family = PF_INET;
     serverAddr.sin_port = SERVER_PORT;
     inet_pton(AF_INET, SERVER_IP, &serverAddr.sin_addr.s_addr);//将字符串类型转换uint32_t
-    std::thread* CP = new std::thread(&client::process, this);
 }
 
 client::~client()
@@ -56,6 +55,11 @@ void client::init()
         exit(1);
     }
     printf("connect IP:%s  Port:%d  succesfully\n", SERVER_IP, SERVER_PORT);//创建成功
+    sendhandler* SH = ClientCore->SHandler;
+    jsonsendler*  JSender = SH->CreatANewSendTask();
+    SH->AddNewValue_int(JSender, "MesType", 0);
+    SH->AddNewValue_string(JSender, "ModuleName", "Door001");
+    SH->SendJson(user, JSender);
 }
 
 void client::process()
@@ -64,8 +68,8 @@ void client::process()
     fd_set fdread, fedwrite;
     FD_ZERO(&fdread);//将fds清零
     FD_ZERO(&fedwrite);//将fds清零
-
     init();
+    
 
     while (1)
     {
@@ -190,9 +194,11 @@ void server::process()
     init();
     //下面就是不断的检查
     printf("监听服务启动\n");
-    printf("\033[34;47m--Powerd By MIBMSCloudSDK V%s--\033[0m\n",SDKVersion);
+    printf("--Powerd By MIBMSCloudSDK V%s--\n",SDKVersion);
+    vector<int> SWD;
     while (1)
     {
+        cout << "\n processing \n" << endl;
         mount = socnum.size();
         //将fds每次都重新赋值
         for (int i = 0; i < mount; ++i)
@@ -234,7 +240,6 @@ void server::process()
                     int clientfd = accept(listener, (struct sockaddr*)&client_address, &client_addrLength);
                     //添加用户，服务器上显示消息，并通知用户连接成功
                     socnum.push_back(clientfd);
-                    printf("Client connect sucessfully\n");
                     char ID[1024];
                     sprintf_s(ID, "客户端ID: % d,", clientfd);
                     char buf[30] = "欢迎使用智能楼宇云服务！\n";
@@ -249,11 +254,10 @@ void server::process()
                     //检测是否断线
                     if (size == 0 || size == -1)
                     {
-                        printf("remote client close,size is%d\n", size);
-
-                        //closesocket(socnum[i]);//先关闭这个套接字
-                        FD_CLR(socnum[i], &fds);//在列表列表中删除
-                        socnum.erase(socnum.begin() + i);//在vector数组中删除
+                        closesocket(socnum[i]);//先关闭这个套接字
+                        cout << "\n模块 "+ ServerCore->FindModule(socnum[i]) +"  已注销" << endl;
+                        //ServerCore->ModuleLogout(socnum[i]);//从业务中注销该ModuleClient
+                        SWD.push_back(i);
                     }
                     //若是没有掉线
                     else
@@ -267,6 +271,12 @@ void server::process()
 
                 }
             }
+            for (int X = 0; X < SWD.size(); X++)
+            {
+                FD_CLR(socnum[SWD[X]], &fds);//在列表列表中删除
+                socnum.erase(socnum.begin() + SWD[X]);//在vector数组中删除
+            }
+            SWD.clear();
             break;
         }
         }
@@ -295,7 +305,6 @@ Handler::Handler()
 
 Handler::~Handler()
 {
-    printf("Handler is Destroyed.");
 }
 
 send_info Handler::MessageHandler(char buf[1024])

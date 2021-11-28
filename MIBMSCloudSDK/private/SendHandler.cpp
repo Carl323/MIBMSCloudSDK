@@ -42,7 +42,7 @@ void sendhandler::AddNewValue_bool(jsonsendler* JSender, std::string key, bool v
 void sendhandler::SendJson(int TargetSocket, jsonsendler* JSender)
 {
 	std::string TargetStr = JSender->OutputJsonString();
-    //std::cout << TargetStr <<std::endl;
+    std::cout << TargetStr <<std::endl;
 	delete JSender;
     char p[1024];
     int i;

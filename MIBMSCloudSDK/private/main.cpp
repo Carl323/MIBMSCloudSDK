@@ -9,10 +9,10 @@
 int main() {
 	ServersManager* SM = new ServersManager;
 	Delay(1.5);
-	/*while (true)
+	printf("MIBMSCloudServer->");
+	while (true)
 	{
-		printf("\n\033[31;43mMIBMSCloudServer\033[0m ->");
-		std::string str;
+		/*std::string str;
 		std::getline(cin, str);
 		char STR[20];
 		int i;
@@ -21,12 +21,12 @@ int main() {
 			STR[i] = str[i];
 		}
 		STR[str.length()] = '\0';
-		cout << "命令行功能在当前版本SDK已被禁用\n" << endl;
-	}*/
-	bool state = true;
+		cout << "命令行功能在当前版本SDK已被禁用\n" << endl;*/
+	}
+	/*bool state = true;
 	while (true)
 	{
-	state = !state;
+	/state = !state;
 	jsonsendler* JSender=NULL;
 	sendhandler* SH=SM->GetServer()->ServerCore->SHandler;
 	JSender=SH->CreatANewSendTask();
@@ -37,7 +37,7 @@ int main() {
 	int ts=SC->MLC->GetModuleSilentSocket("LCD001");
 	if(ts!=0)SH->SendJson(ts,JSender);
 	Delay(2);
-	}
+	}*/
 	return 0;
 }
 #endif // SERVER
@@ -46,12 +46,7 @@ int main() {
 int main()
 {
 	client* cli=new client;
-	jsonsendler* JSender = NULL;
-	sendhandler* SH = cli->ClientCore->SHandler;
-	JSender = SH->CreatANewSendTask();
-	SH->AddNewValue_int(JSender, "MesType", 0);
-	SH->AddNewValue_string(JSender, "ModuleName", "LCD001");
-	SH->SendJson(cli->user, JSender);
+	std::thread* CP = new std::thread(&client::process,cli);
 	while (1)
 	{
 	}

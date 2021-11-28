@@ -20,21 +20,26 @@ ModulesListContainer::ModulesListContainer()
 {
 	ModulesList ={};
 }
+std::string ModulesListContainer::GetModuleName(int Client)
+{
+	return VectorErgodic_ModuleClientInfo_CN(Client,ModulesList).ModuleName;
+	 
+}
 void ModulesListContainer::AddClientInfoToList(ModuleClientInfo ClientInfo)
 {
 	RemoveModuleFromList(ClientInfo.ModuleName);
     ModulesList.emplace_back(ClientInfo);
 }
-void ModulesListContainer::RemoveClientFromList(ModuleClientInfo ClientInfo)
+void ModulesListContainer::RemoveClientFromList(int Client)
 {
-	VectorElementDelete_ModuleClientInfo(ClientInfo.ClientSocket, ModulesList);
+	VectorElementDelete_ModuleClientInfo(Client, ModulesList);
 }
 void ModulesListContainer::RemoveModuleFromList(std::string ModuleName)
 {
 	VectorElementDelete_ModuleClientInfo_ModuleName(ModuleName, ModulesList);
 }
 int ModulesListContainer::GetModuleSilentSocket(std::string ModuleName) {
-	ModuleClientInfo TargetModuleInfo=VectorErgodic_ModuleClientInfo(ModuleName,ModulesList);
+	ModuleClientInfo TargetModuleInfo=VectorErgodic_ModuleClientInfo_MN(ModuleName,ModulesList);
 	return TargetModuleInfo.ClientSocket;
 }
 #endif
