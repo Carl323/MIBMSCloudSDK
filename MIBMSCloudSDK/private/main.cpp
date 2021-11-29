@@ -8,7 +8,7 @@
 #ifdef SERVER
 int main() {
 	ServersManager* SM = new ServersManager;
-	Delay(1.5);
+	Delay(1);
 	SetColor(30, 50);
 	printf("MIBMSCloudServer->WORKING\n");
 	SetColor(1, 0);

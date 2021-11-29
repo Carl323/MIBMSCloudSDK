@@ -12,6 +12,7 @@ Copyright (c) 2021 SuYichen.
 #include <iostream>
 #include <chrono>
 #include <algorithm>
+#include <WinSock2.h>
 using namespace std;
 
 
@@ -20,7 +21,7 @@ ModulesListContainer::ModulesListContainer()
 {
 	ModulesList ={};
 }
-std::string ModulesListContainer::GetModuleName(int Client)
+std::string ModulesListContainer::GetModuleName(SOCKET Client)
 {
 	return VectorErgodic_ModuleClientInfo_CN(Client,ModulesList).ModuleName;
 	 
@@ -30,7 +31,7 @@ void ModulesListContainer::AddClientInfoToList(ModuleClientInfo ClientInfo)
 	RemoveModuleFromList(ClientInfo.ModuleName);
     ModulesList.emplace_back(ClientInfo);
 }
-void ModulesListContainer::RemoveClientFromList(int Client)
+void ModulesListContainer::RemoveClientFromList(SOCKET Client)
 {
 	cout << "Ä£¿é ";
 	cout <<GetModuleName(Client);
@@ -41,7 +42,7 @@ void ModulesListContainer::RemoveModuleFromList(std::string ModuleName)
 {
 	VectorElementDelete_ModuleClientInfo_ModuleName(ModuleName, ModulesList);
 }
-int ModulesListContainer::GetModuleSilentSocket(std::string ModuleName) {
+SOCKET ModulesListContainer::GetModuleSilentSocket(std::string ModuleName) {
 	ModuleClientInfo TargetModuleInfo=VectorErgodic_ModuleClientInfo_MN(ModuleName,ModulesList);
 	return TargetModuleInfo.ClientSocket;
 }

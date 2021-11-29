@@ -21,21 +21,21 @@ public:
 	~Core();
 	unsigned int CPUCoresNum;
 	bool IsBusy();
-	void AddTask(int client,send_info info);
+	void AddTask(SOCKET client,send_info info);
 	sendhandler* SHandler;
 #ifdef SERVER
-	void ModuleLogout(int client);
-	std::string FindModule(int client);
+	void ModuleLogout(SOCKET client);
+	std::string FindModule(SOCKET client);
 	ModulesListContainer* MLC;
 #endif // Server
 private:
 	std::vector<RecvTaskInfo> RecvTasks;
 	std::mutex some_mutex;
 	void TaskHandler();
-	void GenerateNewClient(int client, char info_content[1024]);
-	void CommandHandler(int client, char info_content[1024]);
-	void InfoReportHandler(int client,  char info_content[1024]);
-	void ErrorReportHandler(int client,  char info_content[1024]);
-	void WarningReportHandler(int client, char info_content[1024]);
+	void GenerateNewClient(SOCKET client, char info_content[1024]);
+	void CommandHandler(SOCKET client, char info_content[1024]);
+	void InfoReportHandler(SOCKET client,  char info_content[1024]);
+	void ErrorReportHandler(SOCKET client,  char info_content[1024]);
+	void WarningReportHandler(SOCKET client, char info_content[1024]);
 };
 

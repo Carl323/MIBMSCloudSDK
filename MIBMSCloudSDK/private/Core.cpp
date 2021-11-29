@@ -35,17 +35,17 @@ Core::~Core()
 {
     delete MLC;
 }
-void Core::AddTask(int client, send_info info)
+void Core::AddTask(SOCKET client, send_info info)
 {
     
     RecvTaskInfo Newinfo = {client,info};
     RecvTasks.emplace_back(Newinfo);
 }
-void Core::ModuleLogout(int client)
+void Core::ModuleLogout(SOCKET client)
 {
     MLC->RemoveClientFromList(client);
 }
-std::string Core::FindModule(int client)
+std::string Core::FindModule(SOCKET client)
 {
     return MLC->GetModuleName(client);
 }
@@ -127,7 +127,7 @@ void Core::TaskHandler()
 
 
 
-void Core::GenerateNewClient(int client, char info_content[1024])
+void Core::GenerateNewClient(SOCKET client, char info_content[1024])
 {
     #ifdef SERVER
     std::string ModuleName;
@@ -144,7 +144,7 @@ void Core::GenerateNewClient(int client, char info_content[1024])
 }
 
 
-void Core::CommandHandler(int client,  char info_content[1024])
+void Core::CommandHandler(SOCKET client,  char info_content[1024])
 {
    #ifdef SERVER
 
@@ -156,7 +156,7 @@ void Core::CommandHandler(int client,  char info_content[1024])
    #endif // CLIENT
 }
 
-void Core::InfoReportHandler(int client, char info_content[1024])
+void Core::InfoReportHandler(SOCKET client, char info_content[1024])
 {
    #ifdef SERVER
 
@@ -167,7 +167,7 @@ void Core::InfoReportHandler(int client, char info_content[1024])
 
 }
 
-void Core::ErrorReportHandler(int client, char info_content[1024])
+void Core::ErrorReportHandler(SOCKET client, char info_content[1024])
 {
    #ifdef SERVER
 
@@ -178,7 +178,7 @@ void Core::ErrorReportHandler(int client, char info_content[1024])
 
 }
 
-void Core::WarningReportHandler(int client,char info_content[1024])
+void Core::WarningReportHandler(SOCKET client,char info_content[1024])
 {
     #ifdef SERVER
 

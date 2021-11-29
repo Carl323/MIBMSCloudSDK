@@ -16,9 +16,6 @@ Copyright (c) 2021 SuYichen.
 //如果平台是LINUX,请去掉下一行的注释符号
 //#define LINUX
 
-//服务器IP和端口配置
-#define SERVER_IP "127.0.0.1"// 默认服务器端IP地址
-#define SERVER_PORT 9999// 服务器端口号
 
 #define GEN 0
 #define COM 1

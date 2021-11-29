@@ -9,6 +9,7 @@ Copyright (c) 2021 SuYichen.
 #include "send_info.h"
 #include "stdio.h"
 #include "MethodsLibrary.h"
+#include <INIOperation.h>
 
 
 #ifdef CLIENT
@@ -134,12 +135,21 @@ server::server()
 {
     ServerCore = new Core;
     listener = 0;
-    writing=0;
+    apilistener = 0;
+    CMyINI* p = new CMyINI();
+    p->ReadINI("./Configs/ServerSettings.ini");
+    std::string s_ip = p->GetValue("Network", "SERVER_IP");
+    SERVER_IP = StringToChar(s_ip);
+    std::string s_port = p->GetValue("Network", "SERVER_PORT");
+    SERVER_PORT = StringToChar(s_port);
+    std::string apis_port = p->GetValue("Network", "API_SERVER_PORT");
+    API_SERVER_PORT = StringToChar(apis_port);
     serverAddr.sin_family = PF_INET;
-    serverAddr.sin_port = SERVER_PORT;
-    printf("ServerIP:%s  ", SERVER_IP);
-    printf("Port:%d\n",SERVER_PORT);
+    serverAddr.sin_port = getNumericValue(*SERVER_PORT);
+    apiserverAddr.sin_family = PF_INET;
+    apiserverAddr.sin_port = getNumericValue(*API_SERVER_PORT);
     inet_pton(AF_INET,SERVER_IP, &serverAddr.sin_addr.s_addr);//将字符串类型转换uint32_t
+    inet_pton(AF_INET, SERVER_IP, &apiserverAddr.sin_addr.s_addr);
 }
 server::~server()
 {
@@ -185,6 +195,44 @@ void server::init()
     socnum.push_back(listener);//将监听套接字加入
 }
 
+void server::APIS_init()
+{
+    int   Ret;
+    WSADATA   wsaData;                        // 用于初始化套接字环境
+    // 初始化WinSock环境
+    if ((Ret = WSAStartup(MAKEWORD(2, 2), &wsaData)) != 0)
+    {
+        printf("WSAStartup()   failed   with   error   %d\n", Ret);
+        WSACleanup();
+    }
+
+
+    apilistener = socket(AF_INET, SOCK_STREAM, 0);//采用ipv4,TCP传输
+    if (apilistener == -1) { printf("Error at socket(): %ld\n", WSAGetLastError()); perror("listener failed"); exit(1); }
+    printf("Listner创建成功\n");
+
+    unsigned long ul = 1;
+    if (ioctlsocket(apilistener, FIONBIO, (unsigned long*)&ul) == -1) { perror("ioctl failed"); exit(1); };
+    ///////////////////////////////////////////////////////////////////
+    //中间的参数绑定的地址如果是IPV4则是///////////////////
+    //struct sockaddr_in {
+    //  sa_family_t    sin_family; /* address family: AF_INET */
+    //  in_port_t      sin_port;   /* port in network byte order */
+    //  struct in_addr sin_addr;   /* internet address */
+    //};
+    //Internet address.
+    //struct in_addr {
+    //  uint32_t       s_addr;     /* address in network byte order */
+    //}
+    /////////////////////////////////////////////////////////////////
+    if (bind(apilistener, (struct sockaddr*)&apiserverAddr, sizeof(apiserverAddr)) < 0)
+    {
+        perror("bind error");
+        exit(1);
+    }
+    if (listen(apilistener, 6) < 0) { perror("listen failed"); exit(1); };
+}
+
 void server::process()
 {
 
@@ -214,7 +262,7 @@ void server::process()
         {
             perror("select\n");
             printf("Error at socket(): %ld\n", WSAGetLastError());
-            printf("%d\n", mount);
+            cout<<mount<<endl;
             /*          for (int i = 0; i < mount; ++i)
                         {
                             printf("%d\n", socnum[i]);
@@ -238,14 +286,9 @@ void server::process()
                     struct sockaddr_in client_address;
                     socklen_t client_addrLength = sizeof(struct sockaddr_in);
                     //返回一个用户的套接字
-                    int clientfd = accept(listener, (struct sockaddr*)&client_address, &client_addrLength);
-                    //添加用户，服务器上显示消息，并通知用户连接成功
+                    SOCKET clientfd = accept(listener, (struct sockaddr*)&client_address, &client_addrLength);
+                    //添加用户
                     socnum.push_back(clientfd);
-                    char ID[1024];
-                    sprintf_s(ID, "客户端ID: % d,", clientfd);
-                    char buf[30] = "欢迎使用智能楼宇云服务！\n";
-                    strcat_s(ID, buf);
-                    send(clientfd, ID, sizeof(ID) - 1, 0);//减去最后一个'/0'
 
                 }
                 else if (i != 0 && FD_ISSET(socnum[i], &fds))
@@ -316,7 +359,7 @@ send_info Handler::MessageHandler(char buf[1024])
     return clt;
 }
 
-void Handler::TaskDistributor(int Socket,send_info info)
+void Handler::TaskDistributor(SOCKET Socket,send_info info)
 {
     #ifdef SERVER
     Core* core = Ser->ServerCore;

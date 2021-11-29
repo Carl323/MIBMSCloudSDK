@@ -1,9 +1,10 @@
 #pragma once
 #include "send_info.h"
+#include "WinSock2.h"
 
 struct RecvTaskInfo
 {
-	int client;
+	SOCKET client;
 	send_info Sinfo;
 };
 

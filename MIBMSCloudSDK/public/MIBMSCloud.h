@@ -27,6 +27,8 @@ Copyright (c) 2021 SuYichen.
 #include <unistd.h>//定义socklen_t
 #endif
 
+
+
 #ifdef SERVER
 class server
 {
@@ -35,14 +37,19 @@ public:
     ~server();
     Core* ServerCore;
     void init();
+    void APIS_init();
     void process();
     void sendrebootmessage();
     bool canrebootnow();
 private:
-    int listener;//监听套接字
-    int writing;
+    SOCKET listener;//客户端服务监听套接字
+    SOCKET apilistener;//API服务监听套接字
     sockaddr_in  serverAddr;//IPV4的地址方式
-    std::vector <int> socnum;//存放创建的套接字
+    sockaddr_in  apiserverAddr;
+    std::vector <SOCKET> socnum;//存放创建的套接字
+    char* SERVER_IP;
+    char* SERVER_PORT;
+    char* API_SERVER_PORT;
 };
 #endif
 
@@ -70,7 +77,7 @@ public:
     Handler();
     ~Handler();
     send_info MessageHandler(char buf[1024]);
-    void TaskDistributor(int client,send_info info);
+    void TaskDistributor(SOCKET client,send_info info);
     #ifdef SERVER
     void SetOwner(server* Server);
     #endif

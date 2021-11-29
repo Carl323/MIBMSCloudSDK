@@ -130,7 +130,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);NOMINMAX</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="public\Core.h" />
+    <ClInclude Include="public\INIOperation.h" />
     <ClInclude Include="public\JsonHandler.h" />
     <ClInclude Include="public\MethodsLibrary.h" />
     <ClInclude Include="public\MIBMSCloud.h" />
@@ -154,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\Core.cpp" />
+    <ClCompile Include="private\INIOperation.h.cpp" />
     <ClCompile Include="private\JsonHandler.cpp" />
     <ClCompile Include="private\main.cpp" />
     <ClCompile Include="private\MethodsLibrary.cpp" />

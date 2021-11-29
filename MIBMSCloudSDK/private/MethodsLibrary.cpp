@@ -1,6 +1,7 @@
 #include "MethodsLibrary.h"
 #include "ModulesListContainer.h"
 #include "TaskInfo.h"
+#include "WinSock2.h"
 #include <vector>
 #include <ctime>
 #include <string>
@@ -8,7 +9,13 @@
 
 using namespace std;
 
+
 #ifdef SERVER
+unsigned int GetCPUCoresNum()
+{
+	return std::max(std::thread::hardware_concurrency(), (unsigned int)1);
+}
+
 ModuleClientInfo VectorErgodic_ModuleClientInfo_MN(std::string ModuleName, vector<ModuleClientInfo> ModulesList)
 {
 	ModuleClientInfo titr = {};
@@ -22,7 +29,7 @@ ModuleClientInfo VectorErgodic_ModuleClientInfo_MN(std::string ModuleName, vecto
 	}
 }//按照ModuleName从ModuleList中获取整个ModuleClientInfo，如果不存在则返回一个空的ModuleClientInfo。
 
-ModuleClientInfo VectorErgodic_ModuleClientInfo_CN(int clientsocket, vector<ModuleClientInfo> ModulesList)
+ModuleClientInfo VectorErgodic_ModuleClientInfo_CN(SOCKET clientsocket, vector<ModuleClientInfo> ModulesList)
 {
 	ModuleClientInfo titr = {};
 	for (int i = 0; i < ModulesList.size(); i++)
@@ -36,7 +43,7 @@ ModuleClientInfo VectorErgodic_ModuleClientInfo_CN(int clientsocket, vector<Modu
 	return titr;
 }//按照ClientSocket从ModuleList中获取整个ModuleClientInfo，如果不存在则返回一个空的ModuleClientInfo。
 
-void VectorElementDelete_ModuleClientInfo(int TClientSocket, vector<ModuleClientInfo> ModulesList)
+void VectorElementDelete_ModuleClientInfo(SOCKET TClientSocket, vector<ModuleClientInfo> ModulesList)
 {
 	for(int i=0;i<ModulesList.size();i++)
 	{
@@ -62,7 +69,7 @@ void VectorElementDelete_ModuleClientInfo_ModuleName(std::string ModuleName, vec
 #endif // SERVER
 
 
-void VectorElementDelete_TaskInfo(int TClientSocket, vector<RecvTaskInfo> Tasks) 
+void VectorElementDelete_TaskInfo(SOCKET TClientSocket, vector<RecvTaskInfo> Tasks) 
 {
 	for (int i = 0; i < Tasks.size(); i++)
 	{
@@ -81,10 +88,7 @@ void Delay(int time)//time为秒数
 	while (clock() - now < T);
 }
 
-unsigned int GetCPUCoresNum()
-{
-	return std::max(std::thread::hardware_concurrency(),(unsigned int)1);
-}
+
 
 #include <Windows.h>
 void SetColor(unsigned short forecolor, unsigned short backgroudcolor)
