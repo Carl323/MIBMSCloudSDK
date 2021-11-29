@@ -20,10 +20,8 @@ Copyright (c) 2021 SuYichen.
 #define SERVER_IP "127.0.0.1"// 默认服务器端IP地址
 #define SERVER_PORT 9999// 服务器端口号
 
-//以下内容请勿更改否则会导致Core运行异常
 #define GEN 0
 #define COM 1
 #define REP 2
 #define ERR 3
 #define WAR 4
-#define SDKVersion "1.0.5"

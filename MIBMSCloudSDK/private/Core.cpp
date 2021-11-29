@@ -94,10 +94,12 @@ void Core::TaskHandler()
             {
                 GenerateNewClient(info.client, info.Sinfo.info_content);
             }
+            #ifdef SERVER
             case COM:
             {
                 CommandHandler(info.client, info.Sinfo.info_content);
             }
+            #endif//SERVER
             case REP:
             {
                 InfoReportHandler(info.client, info.Sinfo.info_content);
