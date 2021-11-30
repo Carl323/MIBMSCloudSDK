@@ -1,6 +1,6 @@
 #include "INIOperation.h"
 
-#define INIDEBUG
+//#define INIDEBUG
 
 CMyINI::CMyINI()
 {

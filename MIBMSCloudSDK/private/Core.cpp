@@ -11,24 +11,29 @@ Copyright (c) 2021 SuYichen.
 #include <thread>
 #include <JsonHandler.h>
 #include <MIBMSCloud.h>
+#include <INIOperation.h>
 
 #ifdef SERVER
 Core::Core()
 {
     CPUCoresNum = GetCPUCoresNum();
+    signed int ThreadNumLimit = (CPUCoresNum/2);
     printf("Server is now running on a %d Logical Cores CPU \n",CPUCoresNum);
     RecvTasks = {};
     SHandler=new sendhandler;
     MLC = new ModulesListContainer;
-    thread* t1 = new thread(&Core::TaskHandler, this);
-    printf("已启动线程A！\n");
-    thread* t2 = new thread(&Core::TaskHandler, this);
-    printf("已启动线程B！\n");
-    thread* t3 = new thread(&Core::TaskHandler, this);
-    printf("已启动线程C！\n");
-    thread* t4 = new thread(&Core::TaskHandler, this);
-    printf("已启动线程D！\n");
-    
+    CMyINI* p = new CMyINI();
+    p->ReadINI("./Configs/ServerSettings.ini");
+    std::string TaskHanlerThreadsNum= p->GetValue("Performance", "TaskHanlerThreadsNum");
+    int s = atoi(TaskHanlerThreadsNum.c_str());
+    if (s < 1) s = 1;
+    else if (s > ThreadNumLimit) s= ThreadNumLimit;
+    vector<thread*> t;
+    for (int i = 0; i < s; i++) 
+    {
+        t.emplace_back(new thread(&Core::TaskHandler,this));
+    }
+    printf("ServerCore->TaskHandler共启用了%d个线程\n",s);
 }
 
 Core::~Core()
@@ -120,7 +125,6 @@ void Core::TaskHandler()
         else
         {
             some_mutex.unlock();
-            Delay(1);
         }
     }
 }

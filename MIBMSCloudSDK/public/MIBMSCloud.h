@@ -5,7 +5,7 @@ Copyright (c) 2021 SuYichen.
 */
 #pragma once
 
-#define SDKVersion "1.0.6"
+#define SDKVersion "1.1.1"
 #include "MIBMSCloudApp.h"
 #include "Core.h"
 #include "send_info.h"
@@ -39,6 +39,7 @@ public:
     void init();
     void APIS_init();
     void process();
+    void APIS_process();
     void sendrebootmessage();
     bool canrebootnow();
 private:
@@ -47,9 +48,10 @@ private:
     sockaddr_in  serverAddr;//IPV4的地址方式
     sockaddr_in  apiserverAddr;
     std::vector <SOCKET> socnum;//存放创建的套接字
+    std::vector <SOCKET> socnum_AS;
     char* SERVER_IP;
-    char* SERVER_PORT;
-    char* API_SERVER_PORT;
+    int SERVER_PORT;
+    int API_SERVER_PORT;
 };
 #endif
 

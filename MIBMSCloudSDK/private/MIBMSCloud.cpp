@@ -140,14 +140,17 @@ server::server()
     p->ReadINI("./Configs/ServerSettings.ini");
     std::string s_ip = p->GetValue("Network", "SERVER_IP");
     SERVER_IP = StringToChar(s_ip);
+    cout << SERVER_IP << endl;
     std::string s_port = p->GetValue("Network", "SERVER_PORT");
-    SERVER_PORT = StringToChar(s_port);
+    SERVER_PORT = atoi(s_port.c_str());
+    cout << SERVER_PORT << endl;
     std::string apis_port = p->GetValue("Network", "API_SERVER_PORT");
-    API_SERVER_PORT = StringToChar(apis_port);
+    API_SERVER_PORT = atoi(apis_port.c_str());
+    cout <<API_SERVER_PORT<<endl;
     serverAddr.sin_family = PF_INET;
-    serverAddr.sin_port = getNumericValue(*SERVER_PORT);
+    serverAddr.sin_port = SERVER_PORT;
     apiserverAddr.sin_family = PF_INET;
-    apiserverAddr.sin_port = getNumericValue(*API_SERVER_PORT);
+    apiserverAddr.sin_port = API_SERVER_PORT;
     inet_pton(AF_INET,SERVER_IP, &serverAddr.sin_addr.s_addr);//将字符串类型转换uint32_t
     inet_pton(AF_INET, SERVER_IP, &apiserverAddr.sin_addr.s_addr);
 }
@@ -248,7 +251,7 @@ void server::process()
     vector<int> SWD;
     while (1)
     {
-        mount = socnum.size();
+        mount = int(socnum.size());
         //将fds每次都重新赋值
         for (int i = 0; i < mount; ++i)
         {
@@ -319,6 +322,97 @@ void server::process()
             {
                 FD_CLR(socnum[SWD[X]], &fds);//在列表列表中删除
                 socnum.erase(socnum.begin() + SWD[X]);//在vector数组中删除
+            }
+            SWD.clear();
+            break;
+        }
+        }
+
+
+    }
+}
+void server::APIS_process()
+{
+
+    int mount = 0;
+    fd_set fds_AS;
+    FD_ZERO(&fds_AS);//将fds清零
+    APIS_init();
+    //下面就是不断的检查
+    printf("监听服务启动\n");
+    SetColor(120, 20);
+    printf("--Powerd By MIBMSCloudSDK V%s--\n", SDKVersion);
+    SetColor(1, 0);
+    vector<int> SWD;
+    while (1)
+    {
+        mount = int(socnum_AS.size());
+        //将fds每次都重新赋值
+        for (int i = 0; i < mount; ++i)
+        {
+            FD_SET(socnum_AS[i], &fds_AS);
+        }
+
+        struct timeval timeout = { 0,50000 };//每个Select等待三秒
+        switch (select(0, &fds_AS, NULL, NULL, &timeout))
+        {
+        case -1:
+        {
+            perror("select\n");
+            printf("Error at socket(): %ld\n", WSAGetLastError());
+            cout << mount << endl;
+            /*          for (int i = 0; i < mount; ++i)
+                        {
+                            printf("%d\n", socnum[i]);
+                        }*/
+            Sleep(1000);
+            break;
+        }
+        case 0:
+        {
+            //printf("select timeout......");
+            break;
+        }
+        default:
+        {
+            //将数组中的每一个套接字都和剩余的额套接字进行比较得到当前的任务
+            for (int i = 0; i < mount; ++i)
+            {
+                //如果第一个套接字可读的消息。就要建立连接
+                if (i == 0 && FD_ISSET(socnum_AS[i], &fds_AS))
+                {
+                    struct sockaddr_in client_address;
+                    socklen_t client_addrLength = sizeof(struct sockaddr_in);
+                    //返回一个用户的套接字
+                    SOCKET clientfd = accept(apilistener, (struct sockaddr*)&client_address, &client_addrLength);
+                    //添加用户
+                    socnum_AS.push_back(clientfd);
+
+                }
+                else if (i != 0 && FD_ISSET(socnum_AS[i], &fds_AS))
+                {
+                    char buf[1024];
+                    memset(buf, '\0', sizeof(buf));
+                    int size = recv(socnum_AS[i], buf, sizeof(buf) - 1, 0);
+                    //检测是否断线
+                    if (size == 0 || size == -1)
+                    {
+                        closesocket(socnum_AS[i]);//先关闭这个套接字
+                        //
+                        SWD.push_back(i);
+                    }
+                    //若是没有掉线
+                    else
+                    {
+                        //To Do
+                    }
+
+                }
+            }
+            for (int X = 0; X < SWD.size(); X++)
+            {
+                FD_CLR(socnum_AS[SWD[X]], &fds_AS);//在列表列表中删除
+                socnum_AS.erase(socnum_AS.begin() + SWD[X]);//在vector数组中删除
             }
             SWD.clear();
             break;
