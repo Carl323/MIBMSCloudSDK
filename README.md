@@ -1,0 +1,2 @@
+# MIBMSCloudSDK
+模块化智能楼宇系统云（Module Intelligent Building Management System Cloud）是使用C++语言基于Socket协议开发的C/S智能楼宇云端解决方案，服务端具有多线程高并发的特性。你可以使用MIBMSC SDK快速建立连接！同时我们也支持任何实现了tcp/ip功能和SocketAPI的设备，你只需通过与服务器建立套接字（Socket）长连接并进行json数据包的互传能够轻松实现状态上报和命令接收。
