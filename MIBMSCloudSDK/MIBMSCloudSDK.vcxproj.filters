@@ -48,6 +48,9 @@
     <ClInclude Include="public\INIOperation.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="public\datalocker.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\Core.cpp">
@@ -75,6 +78,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="private\INIOperation.h.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="private\datalocker.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

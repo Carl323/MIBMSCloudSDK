@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="public\Core.h" />
+    <ClInclude Include="public\datalocker.h" />
     <ClInclude Include="public\INIOperation.h" />
     <ClInclude Include="public\JsonHandler.h" />
     <ClInclude Include="public\MethodsLibrary.h" />
@@ -155,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\Core.cpp" />
+    <ClCompile Include="private\datalocker.cpp" />
     <ClCompile Include="private\INIOperation.h.cpp" />
     <ClCompile Include="private\JsonHandler.cpp" />
     <ClCompile Include="private\main.cpp" />

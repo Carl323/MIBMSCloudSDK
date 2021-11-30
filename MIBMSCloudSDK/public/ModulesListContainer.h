@@ -15,6 +15,7 @@ struct ModuleClientInfo
 {
 	SOCKET ClientSocket;
 	std::string ModuleName;
+	std::string ModuleID;
 };
 class ModulesListContainer
 {

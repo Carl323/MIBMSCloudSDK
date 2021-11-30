@@ -40,10 +40,10 @@ Core::~Core()
 {
     delete MLC;
 }
-void Core::AddTask(SOCKET client, send_info info)
+void Core::AddTask(SOCKET client, char info[1024])
 {
     
-    RecvTaskInfo Newinfo = {client,info};
+    RecvTaskInfo Newinfo = {client,*info};
     RecvTasks.emplace_back(Newinfo);
 }
 void Core::ModuleLogout(SOCKET client)
@@ -91,32 +91,32 @@ void Core::TaskHandler()
             RecvTasks.erase(RecvTasks.begin());
             some_mutex.unlock();
             jsonhandler* Jhandler = new jsonhandler;
-            int MT = Jhandler->_get_Json_value_int(info.Sinfo.info_content, "MesType");
+            int MT = Jhandler->_get_Json_value_int(info.Sinfo, "MesType");
             delete Jhandler;
             switch (MT)
             {
-            case GEN:
+            case API:
             {
-                GenerateNewClient(info.client, info.Sinfo.info_content);
+                APIReader(info.client, info.Sinfo);
             }
             #ifdef SERVER
             case COM:
             {
-                CommandHandler(info.client, info.Sinfo.info_content);
+                CommandHandler(info.client, info.Sinfo);
             }
             #endif//SERVER
             case REP:
             {
-                InfoReportHandler(info.client, info.Sinfo.info_content);
+                InfoReportHandler(info.client, info.Sinfo);
             }
             case ERR:
 
             {
-                ErrorReportHandler(info.client, info.Sinfo.info_content);
+                ErrorReportHandler(info.client, info.Sinfo);
             }
             case WAR:
             {
-                WarningReportHandler(info.client, info.Sinfo.info_content);
+                WarningReportHandler(info.client, info.Sinfo);
             }
             default:
                 break;
@@ -129,22 +129,33 @@ void Core::TaskHandler()
     }
 }
 
+void Core::APIReader(SOCKET client, char info_content[1024])
+{
+    std::string APIName;
+    jsonhandler* JHandler = new jsonhandler;
+    APIName = JHandler->_get_Json_value_string(info_content, "APIName", "API");
+    if (APIName == "GenerateNewClient") 
+    {
+        std::string ModuleName;
+        std::string ID;
+        std::string Key;
+        ModuleName = JHandler->_get_Json_value_string(info_content, "ModuleName");
+        ID = JHandler->_get_Json_value_string(info_content, "ID");
+        Key = JHandler->_get_Json_value_string(info_content, "Key");
+        GenerateNewClient(client,ModuleName,ID,Key);
+    }
+
+}
 
 
-void Core::GenerateNewClient(SOCKET client, char info_content[1024])
+
+void Core::GenerateNewClient(SOCKET client, std::string ModuleName,std::string ID, std::string Key)
 {
     #ifdef SERVER
-    std::string ModuleName;
-    jsonhandler* JHandler=new jsonhandler;
-    ModuleName=JHandler->_get_Json_value_string(info_content, "ModuleName");
-    ModuleClientInfo MCInfo={client,ModuleName};
+    ModuleClientInfo MCInfo={client,ModuleName,ID};
     cout << "Ä£¿é "+ModuleName+" ÒÑ×¢²á£¡" << endl;
     MLC->AddClientInfoToList(MCInfo);
     #endif//  SERVER
-    #ifdef CLIENT
-
-    #endif // CLIENT
-
 }
 
 

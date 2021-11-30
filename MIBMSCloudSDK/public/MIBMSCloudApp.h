@@ -17,7 +17,7 @@ Copyright (c) 2021 SuYichen.
 //#define LINUX
 
 
-#define GEN 0
+#define API 0
 #define COM 1
 #define REP 2
 #define ERR 3

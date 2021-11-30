@@ -10,6 +10,7 @@ Copyright (c) 2021 SuYichen.
 #include "stdio.h"
 #include "MethodsLibrary.h"
 #include <INIOperation.h>
+#include <datalocker.h>
 
 
 #ifdef CLIENT
@@ -311,8 +312,10 @@ void server::process()
                     {
                         Handler *handler=new Handler;
                         handler->SetOwner(this);
-                        send_info RecvCon=handler->MessageHandler(buf);
-                        handler->TaskDistributor(socnum[i],RecvCon);
+                        char NewBuf[1024];
+                        datalocker* unlocker = new datalocker;
+                        strcpy_s(NewBuf,unlocker->_unlock_data_char(buf));
+                        handler->TaskDistributor(socnum[i], NewBuf);
                         delete(handler);
                     }
 
@@ -453,7 +456,7 @@ send_info Handler::MessageHandler(char buf[1024])
     return clt;
 }
 
-void Handler::TaskDistributor(SOCKET Socket,send_info info)
+void Handler::TaskDistributor(SOCKET Socket,char info[1024])
 {
     #ifdef SERVER
     Core* core = Ser->ServerCore;

@@ -5,7 +5,7 @@
 struct RecvTaskInfo
 {
 	SOCKET client;
-	send_info Sinfo;
+	char Sinfo[1024];
 };
 
 struct SendTaskInfo

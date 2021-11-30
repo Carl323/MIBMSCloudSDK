@@ -26,6 +26,18 @@ std::string jsonhandler::_get_Json_value_string(char stringtemp[1024], std::stri
 	return TargetStr;
 }
 
+std::string jsonhandler::_get_Json_value_string(char stringtemp[1024], std::string key, std::string UKey)
+{
+	std::string TargetStr = "";
+	Json::Reader reader;
+	Json::Value root;
+	if (reader.parse(stringtemp, root))
+	{
+		TargetStr = root[UKey][key].asString();
+	}
+	return TargetStr;
+}
+
 int jsonhandler::_get_Json_value_int(char stringtemp[1024], std::string key)
 {
 	int TargetInt = NULL;

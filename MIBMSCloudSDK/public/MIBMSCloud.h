@@ -5,7 +5,7 @@ Copyright (c) 2021 SuYichen.
 */
 #pragma once
 
-#define SDKVersion "1.1.1"
+#define SDKVersion "1.1.2"
 #include "MIBMSCloudApp.h"
 #include "Core.h"
 #include "send_info.h"
@@ -79,7 +79,7 @@ public:
     Handler();
     ~Handler();
     send_info MessageHandler(char buf[1024]);
-    void TaskDistributor(SOCKET client,send_info info);
+    void TaskDistributor(SOCKET client,char info[1024]);
     #ifdef SERVER
     void SetOwner(server* Server);
     #endif

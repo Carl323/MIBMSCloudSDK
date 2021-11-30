@@ -4,6 +4,7 @@ SendHandler.h/.cpp
 Copyright (c) 2021 SuYichen.
 */
 #include "SendHandler.h"
+#include "datalocker.h"
 #include <JsonHandler.h>
 #include <send_info.h>
 #include <WinSock2.h>
@@ -54,18 +55,12 @@ void sendhandler::SendJson(int TargetSocket, jsonsendler* JSender)
 
 void sendhandler::sendata(int TargetSocket, char sendbuf[1024])
 {
-    char snd_buf[1024];
-    send_info sndinfo;
-    //清空消息主体的缓存，并将新的消息主体写入结构体↓
-    memset(sndinfo.info_content, 0, sizeof(sndinfo.info_content));
-    for (int i = 0; i < (sizeof(sendbuf)); ++i)
-    {
-        sndinfo.info_content[i] = sendbuf[i];
-    }
-    //清空待发送消息的缓存↓
-    memset(snd_buf, 0, 1024);
-    //结构体转换成字符串↓
-    memcpy(snd_buf, &sndinfo, sizeof(sndinfo));
+    
+    char sndbuf[1024];
+    datalocker* locker = new datalocker;
+    strcpy_s(sndbuf,locker->_lock_data_char(sendbuf));
+    delete locker;
+    std::cout << "发送信息：\n" << sndbuf << std::endl;
     //将消息发送给客户端
-    send(TargetSocket, snd_buf, sizeof(snd_buf) - 1, 0);
+    send(TargetSocket, sndbuf, sizeof(sndbuf) - 1, 0);
 }

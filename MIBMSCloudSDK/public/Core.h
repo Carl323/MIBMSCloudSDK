@@ -21,7 +21,7 @@ public:
 	~Core();
 	unsigned int CPUCoresNum;
 	bool IsBusy();
-	void AddTask(SOCKET client,send_info info);
+	void AddTask(SOCKET client,char info[1024]);
 	sendhandler* SHandler;
 #ifdef SERVER
 	void ModuleLogout(SOCKET client);
@@ -32,10 +32,13 @@ private:
 	std::vector<RecvTaskInfo> RecvTasks;
 	std::mutex some_mutex;
 	void TaskHandler();
-	void GenerateNewClient(SOCKET client, char info_content[1024]);
+	void APIReader(SOCKET client, char info_content[1024]);
 	void CommandHandler(SOCKET client, char info_content[1024]);
 	void InfoReportHandler(SOCKET client,  char info_content[1024]);
 	void ErrorReportHandler(SOCKET client,  char info_content[1024]);
 	void WarningReportHandler(SOCKET client, char info_content[1024]);
+
+	//API
+	void GenerateNewClient(SOCKET client, std::string ModuleName, std::string ID, std::string Key);
 };
 
