@@ -56,6 +56,8 @@ private:
 #endif
 
 #ifdef CLIENT
+#define SERVER_PORT 9999
+#define SERVER_IP "127.0.0.1"
 class client
 {
 public:
@@ -69,6 +71,7 @@ public:
 
 private:
     int writing;
+
     sockaddr_in  serverAddr;//IPV4的地址方式包括服务端地址族、服务端IP地址、服务端端口号
 };
 #endif

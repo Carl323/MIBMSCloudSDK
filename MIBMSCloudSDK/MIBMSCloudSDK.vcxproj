@@ -82,7 +82,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\12394\source\repos\MIBMSCloudSDK\MIBMSCloudSDK\public;$(IncludePath)</IncludePath>
+    <IncludePath>.\public;.\include;$(IncludePath)</IncludePath>
+    <LibraryPath>.\libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -138,6 +139,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -149,6 +151,7 @@
     <ClInclude Include="public\MIBMSCloud.h" />
     <ClInclude Include="public\MIBMSCloudApp.h" />
     <ClInclude Include="public\ModulesListContainer.h" />
+    <ClInclude Include="public\ScriptCodeInterface.h" />
     <ClInclude Include="public\SendHandler.h" />
     <ClInclude Include="public\send_info.h" />
     <ClInclude Include="public\ServersManager.h" />
@@ -163,6 +166,7 @@
     <ClCompile Include="private\MethodsLibrary.cpp" />
     <ClCompile Include="private\MIBMSCloud.cpp" />
     <ClCompile Include="private\ModulesListContainer.cpp" />
+    <ClCompile Include="private\ScriptCodeInterface.cpp" />
     <ClCompile Include="private\SendHandler.cpp" />
     <ClCompile Include="private\ServersManager.cpp" />
   </ItemGroup>

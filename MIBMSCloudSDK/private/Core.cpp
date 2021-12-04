@@ -12,10 +12,12 @@ Copyright (c) 2021 SuYichen.
 #include <JsonHandler.h>
 #include <MIBMSCloud.h>
 #include <INIOperation.h>
+#include <ScriptCodeInterface.h>
 
 #ifdef SERVER
 Core::Core()
 {
+    PSI = new PythonScriptInterface;
     CPUCoresNum = GetCPUCoresNum();
     signed int ThreadNumLimit = (CPUCoresNum/2);
     printf("Server is now running on a %d Logical Cores CPU \n",CPUCoresNum);
@@ -39,6 +41,7 @@ Core::Core()
 Core::~Core()
 {
     delete MLC;
+    delete PSI;
 }
 void Core::AddTask(SOCKET client, char info[1024])
 {
@@ -131,30 +134,77 @@ void Core::TaskHandler()
 
 void Core::APIReader(SOCKET client, char info_content[1024])
 {
-    std::string APIName;
+    std::string APIClass;
     jsonhandler* JHandler = new jsonhandler;
-    APIName = JHandler->_get_Json_value_string(info_content, "APIName", "API");
-    if (APIName == "GenerateNewClient") 
+    std::string Key;
+    Key = JHandler->_get_Json_value_string(info_content, "Key");
+    APIClass = JHandler->_get_Json_value_string(info_content, "APIClass", "API");
+    if (APIClass == "System")
     {
-        std::string ModuleName;
-        std::string ID;
-        std::string Key;
-        ModuleName = JHandler->_get_Json_value_string(info_content, "ModuleName");
-        ID = JHandler->_get_Json_value_string(info_content, "ID");
-        Key = JHandler->_get_Json_value_string(info_content, "Key");
-        GenerateNewClient(client,ModuleName,ID,Key);
+        APIClass_System(client,info_content);
+    }//API_Class_System
+    else if (APIClass == "FaceRecognition")
+    {
+         
+      }//API_Class_FaceRecognition
+    else if(APIClass == "Script")
+    {
+
     }
 
+    delete JHandler;
 }
 
+void Core::APIClass_System(SOCKET client, char info_content[1024])
+{ 
+    jsonhandler* JHandler = new jsonhandler;
+    std::string APIName;
+    APIName= JHandler->_get_Json_value_string(info_content, "APIName", "Args", "API");
+    if(APIName== "GenerateNewClient")
+    {
+        std::string ID;
+        std::string ModuleName;
+        std::string Key;
+        ID = JHandler->_get_Json_value_string(info_content, "ID", "Args", "API");
+        ModuleName = JHandler->_get_Json_value_string(info_content, "ModuleName", "Args", "API");
+        Key = JHandler->_get_Json_value_string(info_content, "Key");
+        GenerateNewClient(client, ModuleName, ID, Key);
+    }
 
+    delete JHandler;
+}
+
+void Core::APIClass_FaceRecognition(SOCKET client, char info_content[1024])
+{
+    jsonhandler* JHandler = new jsonhandler;
+    std::string APIName;
+    APIName = JHandler->_get_Json_value_string(info_content, "APIName", "Args", "API");
+    if (APIName == "DoFaceRecognition")
+    {
+        std::string ID;
+        std::string ImgByte;
+        ID = JHandler->_get_Json_value_string(info_content, "ID", "Args", "API");
+        ImgByte = JHandler->_get_Json_value_string(info_content, "ImgByte", "Args", "API");
+        //To Do FaceRecognition
+    }
+
+    delete JHandler;
+}
+
+void Core::APIClass_Script(SOCKET client, char info_content[1024])
+{
+    jsonhandler* JHandler = new jsonhandler;
+    std::string APIName;
+    APIName = JHandler->_get_Json_value_string(info_content, "APIName", "Args", "API");
+    PSI->FunctionNavigation_Interface(APIName,info_content);
+}
 
 void Core::GenerateNewClient(SOCKET client, std::string ModuleName,std::string ID, std::string Key)
 {
     #ifdef SERVER
     ModuleClientInfo MCInfo={client,ModuleName,ID};
-    cout << "模块 "+ModuleName+" 已注册！" << endl;
     MLC->AddClientInfoToList(MCInfo);
+    cout << "模块 " + ModuleName + " 已注册！" << endl;
     #endif//  SERVER
 }
 

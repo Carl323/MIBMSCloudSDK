@@ -48,6 +48,9 @@
     <ClInclude Include="public\INIOperation.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="public\ScriptCodeInterface.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="public\datalocker.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -81,6 +84,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="private\datalocker.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="private\ScriptCodeInterface.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

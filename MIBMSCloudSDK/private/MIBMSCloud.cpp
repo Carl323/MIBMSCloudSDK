@@ -21,7 +21,7 @@ client::client()
     writing = 0;
     serverAddr.sin_family = PF_INET;
     serverAddr.sin_port = SERVER_PORT;
-    inet_pton(AF_INET, SERVER_IP, &serverAddr.sin_addr.s_addr);//将字符串类型转换uint32_t
+    inet_pton(AF_INET,SERVER_IP, &serverAddr.sin_addr.s_addr);//将字符串类型转换uint32_t
 }
 
 client::~client()
@@ -100,18 +100,18 @@ void client::process()
                 int size = recv(user, recvbuf, sizeof(recvbuf) - 1, 0);
                 if (size > 0)
                 {
-                    printf("server:%s\n", recvbuf);
-                    memset(recvbuf, '\0', sizeof(recvbuf));
                     Handler* handler = new Handler;
                     handler->SetOwner(this);
-                    send_info RecvCon = handler->MessageHandler(recvbuf);
-                    handler->TaskDistributor(user, RecvCon);
-                    Delay(1);
+                    char NewBuf[1024];
+                    datalocker* unlocker = new datalocker;
+                    strcpy_s(NewBuf, unlocker->_unlock_data_char(recvbuf));
+                    handler->TaskDistributor(user,NewBuf);
+                    delete(handler);
                 }
                 else if (size == 0)
                 {
                     printf("server is closed\n");
-                    exit(1);
+                    
                 }
             }
             if (FD_ISSET(user, &fedwrite))

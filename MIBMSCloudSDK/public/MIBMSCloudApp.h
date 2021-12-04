@@ -20,5 +20,5 @@ Copyright (c) 2021 SuYichen.
 #define API 0
 #define COM 1
 #define REP 2
-#define ERR 3
-#define WAR 4
+#define WAR 3
+#define ERR 4  
