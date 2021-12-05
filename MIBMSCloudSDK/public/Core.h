@@ -37,7 +37,8 @@ private:
 	void APIReader(SOCKET client, char info_content[1024]);
 	void APIClass_System(SOCKET client, char info_content[1024]);
 	void APIClass_FaceRecognition(SOCKET client, char info_content[1024]);
-	void APIClass_Script(SOCKET client, char info_content[1024]);
+	void APIClass_UserDefinedScript(SOCKET client, char info_content[1024]);
+	void APIClass_Face(SOCKET client, char info_content[1024]);
 	void CommandHandler(SOCKET client, char info_content[1024]);
 	void InfoReportHandler(SOCKET client,  char info_content[1024]);
 	void ErrorReportHandler(SOCKET client,  char info_content[1024]);

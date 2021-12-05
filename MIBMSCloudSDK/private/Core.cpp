@@ -159,7 +159,7 @@ void Core::APIClass_System(SOCKET client, char info_content[1024])
 { 
     jsonhandler* JHandler = new jsonhandler;
     std::string APIName;
-    APIName= JHandler->_get_Json_value_string(info_content, "APIName", "Args", "API");
+    APIName= JHandler->_get_Json_value_string(info_content, "APIName", "API");
     if(APIName== "GenerateNewClient")
     {
         std::string ID;
@@ -178,7 +178,7 @@ void Core::APIClass_FaceRecognition(SOCKET client, char info_content[1024])
 {
     jsonhandler* JHandler = new jsonhandler;
     std::string APIName;
-    APIName = JHandler->_get_Json_value_string(info_content, "APIName", "Args", "API");
+    APIName = JHandler->_get_Json_value_string(info_content, "APIName","API");
     if (APIName == "DoFaceRecognition")
     {
         std::string ID;
@@ -191,12 +191,19 @@ void Core::APIClass_FaceRecognition(SOCKET client, char info_content[1024])
     delete JHandler;
 }
 
-void Core::APIClass_Script(SOCKET client, char info_content[1024])
+void Core::APIClass_UserDefinedScript(SOCKET client, char info_content[1024])
 {
     jsonhandler* JHandler = new jsonhandler;
     std::string APIName;
-    APIName = JHandler->_get_Json_value_string(info_content, "APIName", "Args", "API");
-    PSI->FunctionNavigation_Interface(APIName,info_content);
+    APIName = JHandler->_get_Json_value_string(info_content, "APIName", "API");
+}
+
+void Core::APIClass_Face(SOCKET client, char info_content[1024])
+{
+    jsonhandler* JHandler = new jsonhandler;
+    std::string APIName;
+    APIName = JHandler->_get_Json_value_string(info_content, "APIName", "API");
+
 }
 
 void Core::GenerateNewClient(SOCKET client, std::string ModuleName,std::string ID, std::string Key)

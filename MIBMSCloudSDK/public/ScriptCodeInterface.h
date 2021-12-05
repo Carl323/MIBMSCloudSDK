@@ -9,8 +9,18 @@ class PythonScriptInterface
 public:
 	PythonScriptInterface();
 	~PythonScriptInterface();
-	void FunctionNavigation_Interface(std::string FuncName,char content[1024]);
+	class Face
+	{
+	public:
+		
+		PyObject* FModule = PyImport_ImportModule("Face");
+		PyObject* Fun_ImgToBase64 = PyObject_GetAttrString(FModule, "ImgToBase64");
+		PyObject* Fun_Base64ToImg = PyObject_GetAttrString(FModule, "Base64ToImg");
+
+		std::string ImgToBase64(std::string ImgCachePath);
+		void Base64ToImg(std::string Str, std::string ImgCachePath);
+	private:
+	};
 private:
-	PyObject* pModule = NULL;
-	PyObject* pNavigationFun = NULL;
+	
 };
