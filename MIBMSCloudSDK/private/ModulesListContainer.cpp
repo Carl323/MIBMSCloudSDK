@@ -26,7 +26,7 @@ std::string ModulesListContainer::GetModuleName(SOCKET Client)
 	return VectorErgodic_ModuleClientInfo_CN(Client,ModulesList).ModuleName;
 	 
 }
-void ModulesListContainer::AddClientInfoToList(ModuleClientInfo ClientInfo)
+void ModulesListContainer::AddClientInfoToList(Device ClientInfo)
 {
 	RemoveModuleFromList(ClientInfo.ModuleName);
     ModulesList.emplace_back(ClientInfo);
@@ -42,8 +42,8 @@ void ModulesListContainer::RemoveModuleFromList(std::string ModuleName)
 {
 	VectorElementDelete_ModuleClientInfo_ModuleName(ModuleName, ModulesList);
 }
-SOCKET ModulesListContainer::GetModuleSilentSocket(std::string ModuleName) {
-	ModuleClientInfo TargetModuleInfo=VectorErgodic_ModuleClientInfo_MN(ModuleName,ModulesList);
-	return TargetModuleInfo.ClientSocket;
+Device ModulesListContainer::GetDevice(std::string ModuleName) {
+	Device DVC=VectorErgodic_ModuleClientInfo_MN(ModuleName,ModulesList);
+	return DVC;
 }
 #endif

@@ -16,9 +16,9 @@ unsigned int GetCPUCoresNum()
 	return std::max(std::thread::hardware_concurrency(), (unsigned int)1);
 }
 
-ModuleClientInfo VectorErgodic_ModuleClientInfo_MN(std::string ModuleName, vector<ModuleClientInfo> ModulesList)
+Device VectorErgodic_ModuleClientInfo_MN(std::string ModuleName, vector<Device> ModulesList)
 {
-	ModuleClientInfo titr = {};
+	Device titr = {};
 	for (int i = 0; i < ModulesList.size(); i++)
 	{
 		if (ModulesList[i].ModuleName == ModuleName)
@@ -29,9 +29,9 @@ ModuleClientInfo VectorErgodic_ModuleClientInfo_MN(std::string ModuleName, vecto
 	}
 }//按照ModuleName从ModuleList中获取整个ModuleClientInfo，如果不存在则返回一个空的ModuleClientInfo。
 
-ModuleClientInfo VectorErgodic_ModuleClientInfo_CN(SOCKET clientsocket, vector<ModuleClientInfo> ModulesList)
+Device VectorErgodic_ModuleClientInfo_CN(SOCKET clientsocket, vector<Device> ModulesList)
 {
-	ModuleClientInfo titr = {};
+	Device titr = {};
 	for (int i = 0; i < ModulesList.size(); i++)
 	{
 		if (ModulesList[i].ClientSocket == clientsocket)
@@ -43,7 +43,7 @@ ModuleClientInfo VectorErgodic_ModuleClientInfo_CN(SOCKET clientsocket, vector<M
 	return titr;
 }//按照ClientSocket从ModuleList中获取整个ModuleClientInfo，如果不存在则返回一个空的ModuleClientInfo。
 
-void VectorElementDelete_ModuleClientInfo(SOCKET TClientSocket, vector<ModuleClientInfo> ModulesList)
+void VectorElementDelete_ModuleClientInfo(SOCKET TClientSocket, vector<Device> ModulesList)
 {
 	for(int i=0;i<ModulesList.size();i++)
 	{
@@ -55,7 +55,7 @@ void VectorElementDelete_ModuleClientInfo(SOCKET TClientSocket, vector<ModuleCli
 	}
 }
 
-void VectorElementDelete_ModuleClientInfo_ModuleName(std::string ModuleName, vector<ModuleClientInfo> ModulesList)
+void VectorElementDelete_ModuleClientInfo_ModuleName(std::string ModuleName, vector<Device> ModulesList)
 {
 	for (int i = 0; i < ModulesList.size(); i++)
 	{

@@ -5,7 +5,7 @@ Copyright (c) 2021 SuYichen.
 */
 #pragma once
 
-#define SDKVersion "1.1.2"
+#define SDKVersion "1.1.4"
 #include "MIBMSCloudApp.h"
 #include "Core.h"
 #include "send_info.h"

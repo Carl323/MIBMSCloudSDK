@@ -141,12 +141,15 @@ server::server()
     p->ReadINI("./Configs/ServerSettings.ini");
     std::string s_ip = p->GetValue("Network", "SERVER_IP");
     SERVER_IP = StringToChar(s_ip);
+    cout << "当前服务器IP:";
     cout << SERVER_IP << endl;
     std::string s_port = p->GetValue("Network", "SERVER_PORT");
     SERVER_PORT = atoi(s_port.c_str());
+    cout << "当前服务器Device端口:";
     cout << SERVER_PORT << endl;
     std::string apis_port = p->GetValue("Network", "API_SERVER_PORT");
     API_SERVER_PORT = atoi(apis_port.c_str());
+    cout << "当前服务器Client端口:";
     cout <<API_SERVER_PORT<<endl;
     serverAddr.sin_family = PF_INET;
     serverAddr.sin_port = SERVER_PORT;

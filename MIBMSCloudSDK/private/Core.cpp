@@ -6,6 +6,7 @@ Copyright (c) 2021 SuYichen.
 #include "Core.h"
 #include "MethodsLibrary.h"
 #include "TaskInfo.h"
+#include "Device.h"
 #include <vector>
 #include <mutex>
 #include <thread>
@@ -13,6 +14,7 @@ Copyright (c) 2021 SuYichen.
 #include <MIBMSCloud.h>
 #include <INIOperation.h>
 #include <ScriptCodeInterface.h>
+
 
 #ifdef SERVER
 Core::Core()
@@ -110,7 +112,10 @@ void Core::TaskHandler()
             #endif//SERVER
             case REP:
             {
-                InfoReportHandler(info.client, info.Sinfo);
+                jsonhandler* Jhandler = new jsonhandler;
+                std::string DN = Jhandler->_get_Json_value_string(info.Sinfo, "ModuleName");
+                delete Jhandler;
+                InfoReportHandler(DN,info.Sinfo);
             }
             case ERR:
 
@@ -209,7 +214,10 @@ void Core::APIClass_Face(SOCKET client, char info_content[1024])
 void Core::GenerateNewClient(SOCKET client, std::string ModuleName,std::string ID, std::string Key)
 {
     #ifdef SERVER
-    ModuleClientInfo MCInfo={client,ModuleName,ID};
+    Device MCInfo;
+    MCInfo.ClientSocket = client;
+    MCInfo.ModuleName = ModuleName;
+    MCInfo.ModuleID = ID;
     MLC->AddClientInfoToList(MCInfo);
     cout << "Ä£¿é " + ModuleName + " ÒÑ×¢²á£¡" << endl;
     #endif//  SERVER
@@ -228,10 +236,11 @@ void Core::CommandHandler(SOCKET client,  char info_content[1024])
    #endif // CLIENT
 }
 
-void Core::InfoReportHandler(SOCKET client, char info_content[1024])
+void Core::InfoReportHandler(std::string ModuleName, char info_content[1024])
 {
    #ifdef SERVER
-
+   Device TD = MLC->GetDevice(ModuleName);
+   TD.SetValue(info_content[1024]);
    #endif//  SERVER
    #ifdef CLIENT
 

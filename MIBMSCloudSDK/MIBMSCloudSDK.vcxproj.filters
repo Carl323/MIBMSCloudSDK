@@ -54,6 +54,9 @@
     <ClInclude Include="public\datalocker.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="public\Device.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\Core.cpp">
@@ -87,6 +90,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="private\ScriptCodeInterface.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="private\Device.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
