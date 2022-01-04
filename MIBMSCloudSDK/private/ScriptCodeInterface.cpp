@@ -17,7 +17,7 @@ PythonScriptInterface::~PythonScriptInterface()
 	Py_Finalize(); 
 }
 
-std::string PythonScriptInterface::Face::ImgToBase64(std::string ImgCachePath)
+std::string Face::ImgToBase64(std::string ImgCachePath)
 {
 	PyObject* args = Py_BuildValue("s", ImgCachePath.c_str());//给python函数参数赋值
 	PyObject* pRet=PyObject_CallObject(Fun_ImgToBase64,args);//调用函数
@@ -26,8 +26,14 @@ std::string PythonScriptInterface::Face::ImgToBase64(std::string ImgCachePath)
 	return res;
 }
 
-void PythonScriptInterface::Face::Base64ToImg(std::string ImgStr, std::string ImgCachePath)
+void Face::Base64ToImg(std::string ImgStr, std::string ImgCachePath)
 {
 	PyObject* args = Py_BuildValue("ss",ImgStr.c_str(),ImgCachePath.c_str());//给python函数参数赋值
 	PyObject_CallObject(Fun_Base64ToImg, args);//调用函数
+}
+
+void Control::Tick()
+{
+	PyObject* args = Py_BuildValue("ss","");//给python函数参数赋值
+	PyObject_CallObject(Fun_CMain, args);
 }

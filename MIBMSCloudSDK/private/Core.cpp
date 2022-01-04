@@ -240,7 +240,7 @@ void Core::InfoReportHandler(std::string ModuleName, char info_content[1024])
 {
    #ifdef SERVER
    Device TD = MLC->GetDevice(ModuleName);
-   TD.SetValue(info_content[1024]);
+   TD.SetValue(info_content);
    #endif//  SERVER
    #ifdef CLIENT
 

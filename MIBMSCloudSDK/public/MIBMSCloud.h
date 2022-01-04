@@ -5,10 +5,12 @@ Copyright (c) 2021 SuYichen.
 */
 #pragma once
 
-#define SDKVersion "1.1.4"
+#define SDKVersion "1.1.5"
 #include "MIBMSCloudApp.h"
 #include "Core.h"
 #include "send_info.h"
+#include "SClock.h"
+#include "ScriptCodeInterface.h"
 #include <conio.h>
 #include <iostream>
 #include <thread>
@@ -52,6 +54,8 @@ private:
     char* SERVER_IP;
     int SERVER_PORT;
     int API_SERVER_PORT;
+    Control* ControlScript;
+    SClock* clock;
 };
 #endif
 

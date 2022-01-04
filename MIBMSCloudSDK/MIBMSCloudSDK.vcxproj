@@ -153,6 +153,7 @@
     <ClInclude Include="public\MIBMSCloud.h" />
     <ClInclude Include="public\MIBMSCloudApp.h" />
     <ClInclude Include="public\ModulesListContainer.h" />
+    <ClInclude Include="public\SClock.h" />
     <ClInclude Include="public\ScriptCodeInterface.h" />
     <ClInclude Include="public\SendHandler.h" />
     <ClInclude Include="public\send_info.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="private\MethodsLibrary.cpp" />
     <ClCompile Include="private\MIBMSCloud.cpp" />
     <ClCompile Include="private\ModulesListContainer.cpp" />
+    <ClCompile Include="private\SClock.cpp" />
     <ClCompile Include="private\ScriptCodeInterface.cpp" />
     <ClCompile Include="private\SendHandler.cpp" />
     <ClCompile Include="private\ServersManager.cpp" />

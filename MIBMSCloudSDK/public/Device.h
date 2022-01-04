@@ -11,9 +11,11 @@ public:
 	SOCKET ClientSocket;
 	std::string ModuleName;
 	std::string ModuleID;
-	void Reboot();
+	std::string Description;
+	void Reboot();//÷ÿ∆Ù…Ë±∏
 	void SetValue(char info_content[1024]);
-
-private:
 	jsonhandler* Handler;
+private:
+	Json::Value Report_Quantity;
+	Json::Value Controlled_Quantity;
 };
