@@ -4,7 +4,6 @@
 SClock::SClock(Control* ControlS)
 {
 	ControlScript = ControlS;
-	TickCall();
 }
 
 SClock::~SClock()

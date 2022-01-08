@@ -130,7 +130,6 @@ void Core::TaskHandler()
                 WarningReportHandler(info.client, info.Sinfo);
             }
             default:
-                Delay(1);
                 break;
             }
         }

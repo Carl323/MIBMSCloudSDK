@@ -39,8 +39,8 @@ Control::Control(ModulesListContainer* MLC)
 
 void Control::Tick()
 {
-	some_mutex.lock();
+	some_mutex2.lock();
 	PyObject* args = Py_BuildValue("ss","");//给python函数参数赋值
 	PyObject_CallObject(Fun_CMain, args);
-	some_mutex.unlock();
+	some_mutex2.unlock();
 }

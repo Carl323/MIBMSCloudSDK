@@ -37,5 +37,5 @@ public:
 	ModulesListContainer* DC;
 	void Tick();
 private:
-	std::mutex some_mutex;
+	std::mutex some_mutex2;
 };
