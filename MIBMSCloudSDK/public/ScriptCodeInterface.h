@@ -1,6 +1,8 @@
 #pragma once
+#include "ModulesListContainer.h"
 #include <iostream>
 #include <Python.h>
+#include <mutex>
 #include<string>
 
 class PythonScriptInterface
@@ -29,8 +31,11 @@ private:
 class Control : public PythonScriptInterface
 {
 public:
+	Control(ModulesListContainer* MLC);
 	PyObject* CModule = PyImport_ImportModule("Control");
 	PyObject* Fun_CMain = PyObject_GetAttrString(CModule, "Main");
+	ModulesListContainer* DC;
 	void Tick();
 private:
+	std::mutex some_mutex;
 };

@@ -2,6 +2,7 @@
 #include "ModulesListContainer.h"
 #include "TaskInfo.h"
 #include "WinSock2.h"
+#include "Device.h"
 #include <vector>
 using namespace std;
 
@@ -14,7 +15,7 @@ void SetColor(unsigned short forecolor = 4, unsigned short backgroudcolor = 0);
 #endif // SERVER
 
 void VectorElementDelete_TaskInfo(SOCKET TClientSocket, vector<RecvTaskInfo> Tasks);
-void Delay(int time);
+void Delay(float time);
 unsigned int GetCPUCoresNum();
 static int getNumericValue(char str) {
 	int ia = str - '0';

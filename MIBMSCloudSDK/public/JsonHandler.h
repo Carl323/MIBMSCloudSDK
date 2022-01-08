@@ -13,8 +13,11 @@ public:
 	jsonhandler();
 	~jsonhandler();
 	std::string _get_Json_value_string(char stringtemp[1024], std::string key);
+	std::string _get_Json_value_string(std::string stringtemp, std::string key);
 	std::string _get_Json_value_string(char stringtemp[1024], std::string key, std::string ROOT);
+	std::string _get_Json_value_string(std::string stringtemp, std::string key, std::string UKey);
 	std::string _get_Json_value_string(char stringtemp[1024], std::string key, std::string ROOT2,std::string ROOT1);
+	std::string _get_Json_value_string(std::string stringtemp, std::string key, std::string ROOT2, std::string ROOT1);
 	int _get_Json_value_int(char stringtemp[1024], std::string key);
 	bool _get_Json_value_bool(char stringtemp[1024],std::string key);
 private:

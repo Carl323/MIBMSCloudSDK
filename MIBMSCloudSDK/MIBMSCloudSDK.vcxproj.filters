@@ -60,6 +60,9 @@
     <ClInclude Include="public\SClock.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="public\cmdtool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="private\Core.cpp">
@@ -99,6 +102,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="private\SClock.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="private\cmdtool.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

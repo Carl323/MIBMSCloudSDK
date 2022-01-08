@@ -81,9 +81,9 @@ void VectorElementDelete_TaskInfo(SOCKET TClientSocket, vector<RecvTaskInfo> Tas
 	}
 }
 
-void Delay(int time)//time为秒数 
+void Delay(float time)//time为秒数 
 {
-	int T = time * 1000;
+	float T = time * 1000;
 	clock_t now = clock();
 	while (clock() - now < T);
 }

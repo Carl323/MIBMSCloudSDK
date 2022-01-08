@@ -157,14 +157,12 @@ server::server()
     apiserverAddr.sin_port = API_SERVER_PORT;
     inet_pton(AF_INET,SERVER_IP, &serverAddr.sin_addr.s_addr);//将字符串类型转换uint32_t
     inet_pton(AF_INET, SERVER_IP, &apiserverAddr.sin_addr.s_addr);
-    ControlScript=new Control;
-    clock = new SClock(ControlScript);
+    
 }
 server::~server()
 {
     delete ServerCore;
-    delete ControlScript;
-    delete clock;
+    
 }
 //初始化函数，功能创建监听套接字，绑定端口，并进行监听
 void server::init()
@@ -337,7 +335,6 @@ void server::process()
             break;
         }
         }
-        clock->TickCall();
 
     }
 }

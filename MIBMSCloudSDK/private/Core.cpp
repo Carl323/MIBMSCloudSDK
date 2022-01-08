@@ -6,7 +6,6 @@ Copyright (c) 2021 SuYichen.
 #include "Core.h"
 #include "MethodsLibrary.h"
 #include "TaskInfo.h"
-#include "Device.h"
 #include <vector>
 #include <mutex>
 #include <thread>
@@ -33,6 +32,8 @@ Core::Core()
     if (s < 1) s = 1;
     else if (s > ThreadNumLimit) s= ThreadNumLimit;
     vector<thread*> t;
+    ControlScript = new Control(MLC);
+    clock = new SClock(ControlScript);
     for (int i = 0; i < s; i++) 
     {
         t.emplace_back(new thread(&Core::TaskHandler,this));
@@ -44,6 +45,8 @@ Core::~Core()
 {
     delete MLC;
     delete PSI;
+    delete ControlScript;
+    delete clock;
 }
 void Core::AddTask(SOCKET client, char info[1024])
 {
@@ -127,6 +130,7 @@ void Core::TaskHandler()
                 WarningReportHandler(info.client, info.Sinfo);
             }
             default:
+                Delay(1);
                 break;
             }
         }

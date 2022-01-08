@@ -1,8 +1,10 @@
 #include "SClock.h"
+#include <MethodsLibrary.h>
 
 SClock::SClock(Control* ControlS)
 {
 	ControlScript = ControlS;
+	TickCall();
 }
 
 SClock::~SClock()
@@ -11,5 +13,9 @@ SClock::~SClock()
 
 void SClock::TickCall()
 {
-	ControlScript->Tick();
+	while (true)
+	{
+		ControlScript->Tick();
+		Delay(1);
+	}
 }

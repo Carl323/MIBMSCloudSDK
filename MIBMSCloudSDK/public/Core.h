@@ -11,6 +11,8 @@ Copyright (c) 2021 SuYichen.
 #include "send_info.h"
 #include "TaskInfo.h"
 #include "stdio.h"
+#include "ScriptCodeInterface.h"
+#include "SClock.h"
 #include <vector>
 #include <mutex>
 #include <SendHandler.h>
@@ -28,6 +30,8 @@ public:
 	void ModuleLogout(SOCKET client);
 	std::string FindModule(SOCKET client);
 	ModulesListContainer* MLC;
+	SClock* clock;
+	Control* ControlScript;
 #endif // Server
 private:
 	std::vector<RecvTaskInfo> RecvTasks;

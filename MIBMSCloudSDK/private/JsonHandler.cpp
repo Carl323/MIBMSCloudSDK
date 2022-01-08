@@ -26,6 +26,18 @@ std::string jsonhandler::_get_Json_value_string(char stringtemp[1024], std::stri
 	return TargetStr;
 }
 
+std::string jsonhandler::_get_Json_value_string(std::string stringtemp, std::string key)
+{
+	std::string TargetStr = "";
+	Json::Reader reader;
+	Json::Value root;
+	if (reader.parse(stringtemp, root))
+	{
+		TargetStr = root[key].asString();
+	}
+	return TargetStr;
+}
+
 std::string jsonhandler::_get_Json_value_string(char stringtemp[1024], std::string key, std::string UKey)
 {
 	std::string TargetStr = "";
@@ -38,7 +50,31 @@ std::string jsonhandler::_get_Json_value_string(char stringtemp[1024], std::stri
 	return TargetStr;
 }
 
+std::string jsonhandler::_get_Json_value_string(std::string stringtemp, std::string key, std::string UKey)
+{
+	std::string TargetStr = "";
+	Json::Reader reader;
+	Json::Value root;
+	if (reader.parse(stringtemp, root))
+	{
+		TargetStr = root[UKey][key].asString();
+	}
+	return TargetStr;
+}
+
 std::string jsonhandler::_get_Json_value_string(char stringtemp[1024], std::string key, std::string ROOT2, std::string ROOT1)
+{
+	std::string TargetStr = "";
+	Json::Reader reader;
+	Json::Value root;
+	if (reader.parse(stringtemp, root))
+	{
+		TargetStr = root[ROOT1][ROOT2][key].asString();
+	}
+	return TargetStr;
+}
+
+std::string jsonhandler::_get_Json_value_string(std::string stringtemp, std::string key, std::string ROOT2, std::string ROOT1)
 {
 	std::string TargetStr = "";
 	Json::Reader reader;

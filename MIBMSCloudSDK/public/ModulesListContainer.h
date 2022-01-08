@@ -4,20 +4,15 @@ ModulesListContainer.h/.cpp��ServerOnly��
 Copyright (c) 2021 SuYichen.
 */
 #pragma once
+#include <stdio.h>
 #include "MIBMSCloudApp.h"
 #include "WinSock2.h"
-#include <stdio.h>
+
 #include <vector>
 #include <string>
 
+#include "Device.h"
 #ifdef  SERVER
-class Device
-{
-public:
-	SOCKET ClientSocket;
-	std::string ModuleName;
-	std::string ModuleID;
-};
 class ModulesListContainer
 {
 public:
@@ -27,7 +22,10 @@ public:
 	void RemoveClientFromList(SOCKET Client);
 	void RemoveModuleFromList(std::string ModuleName);
 	Device GetDevice(std::string ModuleName);
-private:
 	std::vector<Device> ModulesList;
+	std::string RQs;
+	std::string CQs;
+private:
+	
 };
 #endif //  SERVER ONLY

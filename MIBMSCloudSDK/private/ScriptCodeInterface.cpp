@@ -32,8 +32,15 @@ void Face::Base64ToImg(std::string ImgStr, std::string ImgCachePath)
 	PyObject_CallObject(Fun_Base64ToImg, args);//调用函数
 }
 
+Control::Control(ModulesListContainer* MLC)
+{
+	DC = MLC;
+}
+
 void Control::Tick()
 {
+	some_mutex.lock();
 	PyObject* args = Py_BuildValue("ss","");//给python函数参数赋值
 	PyObject_CallObject(Fun_CMain, args);
+	some_mutex.unlock();
 }

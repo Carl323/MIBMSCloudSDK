@@ -134,16 +134,18 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);NOMINMAX</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies);</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="public\cmdtool.h" />
     <ClInclude Include="public\Core.h" />
     <ClInclude Include="public\datalocker.h" />
     <ClInclude Include="public\Device.h" />
@@ -161,6 +163,7 @@
     <ClInclude Include="public\TaskInfo.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="private\cmdtool.cpp" />
     <ClCompile Include="private\Core.cpp" />
     <ClCompile Include="private\datalocker.cpp" />
     <ClCompile Include="private\Device.cpp" />
