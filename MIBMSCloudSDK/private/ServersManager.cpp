@@ -18,21 +18,13 @@ ServersManager::ServersManager()
 	theserver = new server;
 	SP = new std::thread(&server::process, theserver);
 	printf("初始化完成！\n");
+	Delay(2);
+	cmd = new CMDTOOL;
+
 }
 ServersManager::~ServersManager()
 {
 	delete theserver;
-}
-
-void ServersManager::Tick()
-{
-	while (true)
-	{
-		while (!SP)
-		{
-			thread* SP = new std::thread(&server::process, theserver);
-		}
-	}
 }
 
 

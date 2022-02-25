@@ -19,5 +19,6 @@ public:
 	void sendata(int TargetSocket, char sendbuf[1024]);
 
 private:
-
+	void sendata(int TargetSocket, char sendbuf[1024]);
+	void sendata();
 };

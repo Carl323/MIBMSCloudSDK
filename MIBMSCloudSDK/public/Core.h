@@ -47,7 +47,6 @@ private:
 	void InfoReportHandler(std::string ModuleName,char info_content[1024]);
 	void ErrorReportHandler(SOCKET client,  char info_content[1024]);
 	void WarningReportHandler(SOCKET client, char info_content[1024]);
-
 	//API
 	void GenerateNewClient(SOCKET client, std::string ModuleName, std::string ID, std::string Key);
 };

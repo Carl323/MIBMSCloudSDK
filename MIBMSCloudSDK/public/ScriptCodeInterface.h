@@ -39,3 +39,4 @@ public:
 private:
 	std::mutex some_mutex2;
 };
+

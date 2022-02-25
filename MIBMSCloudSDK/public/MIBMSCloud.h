@@ -59,26 +59,6 @@ private:
 };
 #endif
 
-#ifdef CLIENT
-#define SERVER_PORT 9999
-#define SERVER_IP "127.0.0.1"
-class client
-{
-public:
-    client();
-    ~client();
-    Core* ClientCore;
-    void init();
-    void process();
-    int user;
-
-
-private:
-    int writing;
-
-    sockaddr_in  serverAddr;//IPV4的地址方式包括服务端地址族、服务端IP地址、服务端端口号
-};
-#endif
 
 class Handler
 {
@@ -87,17 +67,7 @@ public:
     ~Handler();
     send_info MessageHandler(char buf[1024]);
     void TaskDistributor(SOCKET client,char info[1024]);
-    #ifdef SERVER
     void SetOwner(server* Server);
-    #endif
-    #ifdef CLIENT
-    void SetOwner(client* Client);
-    #endif
 private:
-    #ifdef SERVER
     server* Ser;
-    #endif
-    #ifdef CLIENT
-    client* Cli;
-    #endif
 };

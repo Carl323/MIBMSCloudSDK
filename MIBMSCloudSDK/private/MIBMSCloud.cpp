@@ -13,125 +13,8 @@ Copyright (c) 2021 SuYichen.
 #include <datalocker.h>
 
 
-#ifdef CLIENT
-client::client()
-{
-    ClientCore = new Core;
-    user = 0;
-    writing = 0;
-    serverAddr.sin_family = PF_INET;
-    serverAddr.sin_port = SERVER_PORT;
-    inet_pton(AF_INET,SERVER_IP, &serverAddr.sin_addr.s_addr);//将字符串类型转换uint32_t
-}
 
-client::~client()
-{
-    delete ClientCore;
-}
 
-void client::init()
-{
-    int   Ret;
-    WSADATA   wsaData;                        // 用于初始化套接字环境
-                                              // 初始化WinSock环境
-    if ((Ret = WSAStartup(MAKEWORD(2, 2), &wsaData)) != 0)
-    {
-        printf("WSAStartup()   failed   with   error   %d\n", Ret);
-        WSACleanup();
-
-    }
-
-    user = socket(AF_INET, SOCK_STREAM, 0);//采用ipv4,TCP传输
-    if (user <= 0)
-    {
-        perror("establish client faild");
-        printf("Error at socket(): %ld\n", WSAGetLastError());
-        exit(1);
-    };
-    printf("establish succesfully\n");//创建成功
-    //阻塞式的等待服务器连接
-    if (connect(user, (const sockaddr*)&serverAddr, sizeof(serverAddr)) < 0)
-    {
-        perror("connect to server faild");
-        printf("Error at socket(): %ld\n", WSAGetLastError());
-        exit(1);
-    }
-    printf("connect IP:%s  Port:%d  succesfully\n", SERVER_IP, SERVER_PORT);//创建成功
-    sendhandler* SH = ClientCore->SHandler;
-    jsonsendler*  JSender = SH->CreatANewSendTask();
-    SH->AddNewValue_int(JSender, "MesType", 0);
-    SH->AddNewValue_string(JSender, "ModuleName", "Door001");
-    SH->SendJson(user, JSender);
-}
-
-void client::process()
-{
-    char recvbuf[1024];
-    fd_set fdread, fedwrite;
-    FD_ZERO(&fdread);//将fds清零
-    FD_ZERO(&fedwrite);//将fds清零
-    init();
-    
-
-    while (1)
-    {
-        FD_SET(user, &fdread);
-        if (writing == 0) FD_SET(user, &fedwrite);
-
-        struct timeval timeout = { 1,0 };//每个Select等待三秒
-        switch (select(0, &fdread, &fedwrite, NULL, &timeout))
-        {
-        case -1:
-        {
-            //perror("select");
-            printf("Error at socket(): %ld\n", WSAGetLastError());
-            /*exit(1);*/
-            break;
-        }
-        case 0:
-        {
-            //printf("select timeout......");
-            break;
-        }
-        default:
-        {
-            if (FD_ISSET(user, &fdread))//则有读事件
-            {
-                int size = recv(user, recvbuf, sizeof(recvbuf) - 1, 0);
-                if (size > 0)
-                {
-                    Handler* handler = new Handler;
-                    handler->SetOwner(this);
-                    char NewBuf[1024];
-                    datalocker* unlocker = new datalocker;
-                    strcpy_s(NewBuf, unlocker->_unlock_data_char(recvbuf));
-                    handler->TaskDistributor(user,NewBuf);
-                    delete(handler);
-                }
-                else if (size == 0)
-                {
-                    printf("server is closed\n");
-                    
-                }
-            }
-            if (FD_ISSET(user, &fedwrite))
-            {
-                FD_ZERO(&fedwrite);//将fedwrite清零
-                writing = 1;//表示正在写作
-                //std::thread sendtask(bind(user,(SOCKADDR*)&serverAddr, sizeof(serverAddr)));
-                //sendtask.detach();//将子线程和主进程分离且互相不影响
-            }
-
-            break;
-        }
-        }
-
-    }
-
-}
-#endif
-
-#ifdef SERVER
 server::server()
 {
     ServerCore = new Core;
@@ -318,8 +201,9 @@ void server::process()
                         Handler *handler=new Handler;
                         handler->SetOwner(this);
                         char NewBuf[1024];
-                        datalocker* unlocker = new datalocker;
-                        strcpy_s(NewBuf,unlocker->_unlock_data_char(buf));
+                        //datalocker* unlocker = new datalocker;
+                        //strcpy_s(NewBuf,unlocker->_unlock_data_char(buf));
+                        strcpy_s(NewBuf,buf);
                         handler->TaskDistributor(socnum[i], NewBuf);
                         delete(handler);
                     }
@@ -437,15 +321,9 @@ bool server::canrebootnow()
 {
     return (ServerCore->IsBusy());
 }
-#endif
 Handler::Handler()
 {
-#ifdef SERVER
     Ser = NULL;
-#endif // SERVER
-#ifdef CLIENT
-    Cli = NULL;
-#endif // CLIENT
 }
 
 Handler::~Handler()
@@ -462,26 +340,12 @@ send_info Handler::MessageHandler(char buf[1024])
 
 void Handler::TaskDistributor(SOCKET Socket,char info[1024])
 {
-    #ifdef SERVER
     Core* core = Ser->ServerCore;
-    #endif // SERVER
-    #ifdef CLIENT
-    Core* core = Cli->ClientCore;
-    #endif // CLIENT
     core->AddTask(Socket,info);
 }
 
-#ifdef SERVER
 void Handler::SetOwner(server* Server)
 {
     Ser = Server;
 }
-#endif
 
-#ifdef CLIENT
-void Handler::SetOwner(client* Client)
-{
-    Cli = Client;
-
-}
-#endif

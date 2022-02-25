@@ -15,12 +15,16 @@ void SetColor(unsigned short forecolor = 4, unsigned short backgroudcolor = 0);
 #endif // SERVER
 
 void VectorElementDelete_TaskInfo(SOCKET TClientSocket, vector<RecvTaskInfo> Tasks);
+
 void Delay(float time);
+
 unsigned int GetCPUCoresNum();
+
 static int getNumericValue(char str) {
 	int ia = str - '0';
 	return ia;
 };
+
 static char* StringToChar(std::string str) {
 	char* p = (char*)str.data();
 	return p;

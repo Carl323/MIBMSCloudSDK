@@ -8,6 +8,7 @@ SClock::SClock(Control* ControlS)
 
 SClock::~SClock()
 {
+
 }
 
 void SClock::TickCall()
